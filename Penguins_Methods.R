@@ -7,7 +7,7 @@ data("penguins")
 # within the penguin dataset that show any NA values in any of the columns. 
 
 # Filtering to rows with NA's
-penguin_rows_with_na <- penguins[!complete.cases(penguins), ]
+penguin_rows_with_na <- penguins[!complete.cases(penguins)]
 print(penguin_rows_with_na)
 
 
@@ -31,8 +31,8 @@ penguins_Mean_imputated <- penguins_missing
 # If we only replaced the missing values for bill_length_mm.
 bill_length_mm_mean_value <- mean(penguins$bill_length_mm, na.rm = TRUE)
 penguins_Mean_imputated$bill_length_mm[is.na(penguins_Mean_imputated$bill_length_mm)] <- bill_length_mm_mean_value
-penguins_Mean_imputated[!complete.cases(penguins), ]
-penguins_Mean_imputated[!complete.cases(penguins), ]
+penguins_Mean_imputated[!complete.cases(penguins)]
+penguins_Mean_imputated[!complete.cases(penguins)]
 
 regg = lm(body_mass_g~ flipper_length_mm, data = penguins_Mean_imputated, na.action=na.omit)
 print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where missing values are excluded from the dataset."))
@@ -52,7 +52,7 @@ penguins_Mean_imputated$bill_depth_mm[is.na(penguins_Mean_imputated$bill_depth_m
 penguins_Mean_imputated$flipper_length_mm[is.na(penguins_Mean_imputated$flipper_length_mm)] <- flipper_length_mm_mean_value
 penguins_Mean_imputated$body_mass_g[is.na(penguins_Mean_imputated$body_mass_g)] <- body_mass_g_mean_value
 
-penguins_Mean_imputated[!complete.cases(penguins), ]
+penguins_Mean_imputated[!complete.cases(penguins)]
 
 
 # For all columns with numeric values we can simply calculate the mean, median, or mode and replace the NA values. However, the sex column is composed
