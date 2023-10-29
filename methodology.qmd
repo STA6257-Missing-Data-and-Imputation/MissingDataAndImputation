@@ -4,8 +4,6 @@ bibliography: references.bib
 css: styles.css
 ---
 
-## Missing Data Imputation
-
 Techniques for addressing missing data can be simplified into conventional approaches or brought up to date through the application of more recent methods. Although it goes without saying that the more recent methods are always preferable, there are instances in which the older methods could be useful. Also, we have to figure out why the straightforward approaches are not producing the desired results.
 
 ## 3.1 Traditional Methods
