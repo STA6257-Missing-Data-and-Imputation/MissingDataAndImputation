@@ -15,6 +15,10 @@ Missing data is a critical issue that can lead to global crises and cybersecurit
 
 Missing completely at random (MCAR) is best described as data missing entirely at random and unrelated to observed or unobserved factors. Missing at random (MAR) describes a missing variable due to other observed variables within the data set. Missing depending on unobserved predictors (MNAR) describes the missing variable due to unobserved factors within our data set. Missingness that depends on the missing value describes missing data due to the information the participant does not want to make available.
 
+*Table 1 here*
+
+Table 1. Missing data mechanisms explained.
+
 title: "1.2 Imputation "
 
 "Multivariate Imputation by Chained Equation (MICE) predicts missing data using the existing data of other variables. Then it replaces missing values using the predicted values and creates a dataset called imputed dataset. By iteration, it creates multiple imputed datasets. Each dataset is then analyzed using standard statistical analysis techniques, and multiple analysis results are provided." [@khan2020] The downside of this methodology is that it can be complex to implement, assumes that the data is missing at random, has a risk of overfitting, and requires many resources; however, it has the ability to impute more accurate data than single imputation based on underlying patterns in the data.
