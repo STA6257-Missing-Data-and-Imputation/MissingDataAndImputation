@@ -2,3 +2,120 @@
 title: "Analysis"
 bibliography: references.bib
 ---
+
+
+To demonstrate the benefits of imputation, we will create missingness in a predictor variable and create a model by excluding the missing data. Then we will perform imputation on the dataset and recreate the model to see if there is a difference in performance. Before we perform imputations on the penguins [@palmerpenguins] dataset, first the data must be cleaned to omit all incomplete records so we can have the actual values to compare our imputations against. The code block below demonstrates the penguins dataset that we will be using, cleaning the incomplete records, and displays the correlation using the ggplot2 [@ggplot2] package between body_mass_g and flipper_legth_mm that we will be using to construct a model before and after imputation of missing data.
+
+```{r}
+#| warning: false
+
+library(readr)
+library(missMethods)
+library(simputation)
+library(ggplot2)
+
+set.seed(1) 
+
+penguins <- readr::read_csv('penguins.csv')
+
+
+penguin_rows_with_na <- penguins[!complete.cases(penguins), ]
+print(penguin_rows_with_na)
+
+penguins_filtered <- na.omit(penguins)
+
+
+ggplot(penguins_filtered, aes(body_mass_g, flipper_length_mm)) + 
+  geom_count() + 
+  geom_smooth(method='lm')
+
+```
+
+In the code block below, we will create 50% missing at random data in the column flipper_length_mm using the missMethods [@missMethods] package. Then we will create a linear regression to display the r-squared that would be achieved without performing any imputation on the data set.
+
+```{r}
+#| warning: false
+penguins_missing <- delete_MCAR(penguins,0.5,"flipper_length_mm")
+
+regg = lm(body_mass_g~ flipper_length_mm, data = penguins_missing, na.action=na.omit) 
+print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where missing values are excluded from the dataset."))
+
+```
+
+Although this R-Squared is good, it omits half of the data since 50% of the values for flipper_length_mm are missing. In the following code blocks, we will explore imputation of the the missing data.
+
+```{r}
+#| warning: false
+# Make a copy of the dataset and calculate the mean of the specific column
+penguins_Mean_imputated <- penguins_missing
+
+
+# If we only replaced the missing values for flipper_length_mm
+flipper_length_mm_mean_value <- mean(penguins$flipper_length_mm, na.rm = TRUE)
+penguins_Mean_imputated$flipper_length_mm[is.na(penguins_Mean_imputated$flipper_length_mm)] <- flipper_length_mm_mean_value
+penguins_Mean_imputated[!complete.cases(penguins), ]
+
+regg = lm(body_mass_g~ flipper_length_mm, data = penguins_Mean_imputated, na.action=na.omit)
+print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where missing values are imputed as the mean."))
+
+```
+
+As we can see the R-Squared dramatically decreased since we performed a basic version of imputation that just inserts one number for all missing values. Now we will proceed to impute linear model predicted values using the simputation [@simputation] package into the missing data set for bill_length_mm and construct the same model to achieve an increase in r-squared.
+
+```{r}
+#| warning: false
+penguins_imputed <- impute_lm(penguins_missing, flipper_length_mm ~ species + bill_length_mm + bill_depth_mm)
+
+regg = lm(body_mass_g~ flipper_length_mm, data = penguins_imputed)
+print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling."))
+
+```
+
+As shown in the R-Squared output for each model. We can see a small improvement in the accuracy of this model by performing imputation. This accuracy was possible since there wasnt an issue with missing values in species, bill_length_mm, and bill_depth_mm which were used to impute flipper_length_mm. But what happens if these variables contained large amounts of missing values that must be replaced as well?
+
+```{r}
+penguins_missing <- delete_MCAR(penguins,0.5,c("flipper_length_mm","bill_length_mm","bill_depth_mm","body_mass_g","species","sex"))
+tryCatch(
+  {
+  penguins_imputed_missing <- impute_lm(penguins_missing, flipper_length_mm ~ species + bill_length_mm + bill_depth_mm)
+
+  penguins_imputed_missing[!complete.cases(penguins_imputed_missing), ]
+
+  regg = lm(body_mass_g~ flipper_length_mm, data = penguins_imputed_missing)
+  print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling."))
+  },
+  error = function(e) 
+  {
+    print("This caused an error!") # or whatever error handling code you want
+  }
+)
+
+```
+
+It is important to note, that although it appears that we are imputing missing values in the code, the linear model fails to impute when there are missing values in the predicting variables. To avoid this error, below we will impute most of the missing data with mean or mode and attempt to impute flipper_length_mm with a linear model. This method will not be accurate due to the same underlying issue that we saw with imputing mean before.
+
+```{r}
+penguins_missing <- delete_MCAR(penguins,0.5,c("flipper_length_mm","bill_length_mm","bill_depth_mm","body_mass_g","species","sex"))
+bill_length_mm_mean_value <- mean(penguins$bill_length_mm, na.rm = TRUE)
+bill_depth_mm_mean_value <- mean(penguins$bill_depth_mm, na.rm = TRUE)
+flipper_length_mm_mean_value <- mean(penguins$flipper_length_mm, na.rm = TRUE)
+body_mass_g_mean_value <- mean(penguins$body_mass_g, na.rm = TRUE)
+species_mode_value <- mode(penguins$species)
+sex_mode_value <- mode(penguins$sex)
+
+# Replace NAs in the specific column with the mean
+penguins_Mean_imputated$bill_length_mm[is.na(penguins_Mean_imputated$bill_length_mm)] <- bill_length_mm_mean_value
+penguins_Mean_imputated$bill_depth_mm[is.na(penguins_Mean_imputated$bill_depth_mm)] <- bill_depth_mm_mean_value
+penguins_Mean_imputated$flipper_length_mm[is.na(penguins_Mean_imputated$flipper_length_mm)] <- flipper_length_mm_mean_value
+penguins_Mean_imputated$body_mass_g[is.na(penguins_Mean_imputated$body_mass_g)] <- body_mass_g_mean_value
+penguins_Mean_imputated$species[is.na(penguins_Mean_imputated$species)] <- species_mode_value
+penguins_Mean_imputated$sex[is.na(penguins_Mean_imputated$sex)] <- sex_mode_value
+
+penguins_Mean_imputated[!complete.cases(penguins_Mean_imputated), ]
+
+penguins_imputed <- impute_lm(penguins_Mean_imputated, flipper_length_mm ~ species + bill_length_mm + bill_depth_mm)
+
+regg = lm(body_mass_g~ flipper_length_mm, data = penguins_imputed)
+print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling."))
+
+```
