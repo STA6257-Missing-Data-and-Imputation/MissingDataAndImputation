@@ -4,6 +4,7 @@ bibliography: references.bib
 css: styles.css
 ---
 
+## 4.1 Creating Missingness
 
 To demonstrate the benefits of imputation, we will create missingness in a predictor variable and create a model by excluding the missing data. Then we will perform imputation on the dataset and recreate the model to see if there is a difference in performance. Before we perform imputations on the penguins [@palmerpenguins] dataset, first the data must be cleaned to omit all incomplete records so we can have the actual values to compare our imputations against. The code block below demonstrates the penguins dataset that we will be using, cleaning the incomplete records, and displays the correlation using the ggplot2 [@ggplot2] package between body_mass_g and flipper_legth_mm that we will be using to construct a model before and after imputation of missing data.
 
@@ -45,6 +46,8 @@ print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model 
 
 Although this R-Squared is good, it omits half of the data since 50% of the values for flipper_length_mm are missing. In the following code blocks, we will explore imputation of the the missing data.
 
+## 4.2 Single Imputation
+
 ```{r}
 #| warning: false
 # Make a copy of the dataset and calculate the mean of the specific column
@@ -63,6 +66,8 @@ print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model 
 
 As we can see the R-Squared dramatically decreased since we performed a basic version of imputation that just inserts one number for all missing values. Now we will proceed to impute linear model predicted values using the simputation [@simputation] package into the missing data set for bill_length_mm and construct the same model to achieve an increase in r-squared.
 
+## 4.3 Multiple Imputation
+
 ```{r}
 #| warning: false
 penguins_imputed <- impute_lm(penguins_missing, flipper_length_mm ~ species + bill_length_mm + bill_depth_mm)
@@ -71,6 +76,8 @@ regg = lm(body_mass_g~ flipper_length_mm, data = penguins_imputed)
 print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling."))
 
 ```
+
+## 4.4 Other Considerations
 
 As shown in the R-Squared output for each model. We can see a small improvement in the accuracy of this model by performing imputation. This accuracy was possible since there wasnt an issue with missing values in species, bill_length_mm, and bill_depth_mm which were used to impute flipper_length_mm. But what happens if these variables contained large amounts of missing values that must be replaced as well?
 

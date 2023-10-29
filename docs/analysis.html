@@ -223,7 +223,16 @@ div.csl-indent {
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#creating-missingness" id="toc-creating-missingness" class="nav-link active" data-scroll-target="#creating-missingness">4.1 Creating Missingness</a></li>
+  <li><a href="#single-imputation" id="toc-single-imputation" class="nav-link" data-scroll-target="#single-imputation">4.2 Single Imputation</a></li>
+  <li><a href="#multiple-imputation" id="toc-multiple-imputation" class="nav-link" data-scroll-target="#multiple-imputation">4.3 Multiple Imputation</a></li>
+  <li><a href="#other-considerations" id="toc-other-considerations" class="nav-link" data-scroll-target="#other-considerations">4.4 Other Considerations</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -245,6 +254,8 @@ div.csl-indent {
 
 </header>
 
+<section id="creating-missingness" class="level2">
+<h2 class="anchored" data-anchor-id="creating-missingness">4.1 Creating Missingness</h2>
 <p>To demonstrate the benefits of imputation, we will create missingness in a predictor variable and create a model by excluding the missing data. Then we will perform imputation on the dataset and recreate the model to see if there is a difference in performance. Before we perform imputations on the penguins <span class="citation" data-cites="palmerpenguins">(<a href="#ref-palmerpenguins" role="doc-biblioref">Horst, Hill, and Gorman 2020</a>)</span> dataset, first the data must be cleaned to omit all incomplete records so we can have the actual values to compare our imputations against. The code block below demonstrates the penguins dataset that we will be using, cleaning the incomplete records, and displays the correlation using the ggplot2 <span class="citation" data-cites="ggplot2">(<a href="#ref-ggplot2" role="doc-biblioref">Wickham 2016</a>)</span> package between body_mass_g and flipper_legth_mm that we will be using to construct a model before and after imputation of missing data.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
@@ -297,6 +308,9 @@ div.csl-indent {
 </div>
 </div>
 <p>Although this R-Squared is good, it omits half of the data since 50% of the values for flipper_length_mm are missing. In the following code blocks, we will explore imputation of the the missing data.</p>
+</section>
+<section id="single-imputation" class="level2">
+<h2 class="anchored" data-anchor-id="single-imputation">4.2 Single Imputation</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a copy of the dataset and calculate the mean of the specific column</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>penguins_Mean_imputated <span class="ot">&lt;-</span> penguins_missing</span>
@@ -330,6 +344,9 @@ div.csl-indent {
 </div>
 </div>
 <p>As we can see the R-Squared dramatically decreased since we performed a basic version of imputation that just inserts one number for all missing values. Now we will proceed to impute linear model predicted values using the simputation <span class="citation" data-cites="simputation">(<a href="#ref-simputation" role="doc-biblioref">Loo 2022</a>)</span> package into the missing data set for bill_length_mm and construct the same model to achieve an increase in r-squared.</p>
+</section>
+<section id="multiple-imputation" class="level2">
+<h2 class="anchored" data-anchor-id="multiple-imputation">4.3 Multiple Imputation</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>penguins_imputed <span class="ot">&lt;-</span> <span class="fu">impute_lm</span>(penguins_missing, flipper_length_mm <span class="sc">~</span> species <span class="sc">+</span> bill_length_mm <span class="sc">+</span> bill_depth_mm)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -339,6 +356,9 @@ div.csl-indent {
 <pre><code>[1] "0.773206900379413 is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling."</code></pre>
 </div>
 </div>
+</section>
+<section id="other-considerations" class="level2">
+<h2 class="anchored" data-anchor-id="other-considerations">4.4 Other Considerations</h2>
 <p>As shown in the R-Squared output for each model. We can see a small improvement in the accuracy of this model by performing imputation. This accuracy was possible since there wasnt an issue with missing values in species, bill_length_mm, and bill_depth_mm which were used to impute flipper_length_mm. But what happens if these variables contained large amounts of missing values that must be replaced as well?</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>penguins_missing <span class="ot">&lt;-</span> <span class="fu">delete_MCAR</span>(penguins,<span class="fl">0.5</span>,<span class="fu">c</span>(<span class="st">"flipper_length_mm"</span>,<span class="st">"bill_length_mm"</span>,<span class="st">"bill_depth_mm"</span>,<span class="st">"body_mass_g"</span>,<span class="st">"species"</span>,<span class="st">"sex"</span>))</span>
@@ -396,6 +416,7 @@ div.csl-indent {
 
 
 
+</section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
 <div id="ref-palmerpenguins" class="csl-entry" role="doc-biblioentry">
