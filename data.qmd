@@ -1,12 +1,12 @@
 ---
-title: "Data"
+title: "2. Data"
 bibliography: references.bib
 css: styles.css
 ---
 
 This project will focus on the penguin dataset in the "palmerpenguin" package [@palmerpenguins] from R studio. The penguins' dataset is comprised of 8 columns and 344 rows based on data collected on three different species of penguins in Palmer Archipelago, Antarctica. This dataset is fairly clean, and this is important for comparison purposes. In this instance, there are only 11 NA values, which is 3% of the entire dataset. During the analysis, we will be removing parts of the dataset and implementing data imputation methodology to compare the accuracy between the actual values in the dataset and the calculated values we have created using different methodologies.
 
-2.1 Variables
+## 2.1 Variables
 
 -   Species - defines the species of the penguins as Adelie, Chinstrap, or Gentoo
 -   Island - what island (Biscoe, Dream, or Torgersen) the penguins were found in the Palmer Archipelago, Antarctica
@@ -20,6 +20,8 @@ This project will focus on the penguin dataset in the "palmerpenguin" package [@
 A visual depiction of how bill length and depth is measured:
 
 [![[@palmerpenguins] Artwork by \@allison_horst](imgs/culmen_depth.png){fig-align="center"}](https://allisonhorst.github.io/palmerpenguins/)
+
+## 2.2 Data Exploration
 
 Below is a summary of the palmerpenguins dataset [@palmerpenguins] using the summarytools [@summarytools] package and visualizations from the palmerpenguins package. [@palmerpenguins]
 

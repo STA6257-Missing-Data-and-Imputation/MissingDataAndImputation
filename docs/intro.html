@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Introduction</title>
+<title>1. Introduction</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -88,7 +88,7 @@ div.csl-indent {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Introduction</h1>
+      <h1 class="quarto-secondary-nav-title">1. Introduction</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -160,14 +160,21 @@ div.csl-indent {
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#what-is-missing-data-and-imputation" id="toc-what-is-missing-data-and-imputation" class="nav-link active" data-scroll-target="#what-is-missing-data-and-imputation">1.1 What is Missing Data and Imputation?</a></li>
+  <li><a href="#imputation" id="toc-imputation" class="nav-link" data-scroll-target="#imputation">1.2 Imputation</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Introduction</h1>
+<h1 class="title d-none d-lg-block">1. Introduction</h1>
 </div>
 
 
@@ -183,13 +190,22 @@ div.csl-indent {
 </header>
 
 <p>As much as researchers may attempt to eliminate or reduce missing values, datasets are rarely, if ever, perfect, which can impact the legitimacy and reliability of the results obtained. There are four main reasons for missing data: missing completely at random, missing at random, missing depending on unobserved predictors, and missingness that depends on the missing value itself.</p>
+<p>When data is missing in a dataset, it can be handled in two ways. First would be to simply delete the missing data from the dataset. This is generally the best method if the data is missing at random and makes up for a small amount of the larger dataset. If the data is not missing at random, or if deleting it would remove a substantial amount of the data, there is a statistical technique to handle missing data known as “imputation.” The most common type of imputation is single and multiple. “In single imputation, imputed values are considered as actual values. Single imputation ignores the fact that the actual value cannot be predicted for sure by any imputation method. Single imputation based methods do not consider the uncertainty of the imputed values. Instead, they recognize the imputed values as actual values in subsequent analysis.” <span class="citation" data-cites="khan2020">(<a href="#ref-khan2020" role="doc-biblioref">Khan and Hoque 2020</a>)</span> Single imputation replaces missing values by using multiple methods, such as replacing the missing value by copying the previous participants’ value, copying over the worst value in the data set, or calculating the mean for the variable. With a single imputation, there is no distinction between observed and imputed values, which could lead to bias, influenced by outliers, can spread errors, no way to detect the imputed values, and this methodology cannot be used for complex data. Despite these drawbacks, simple imputation is one of the most popular types of imputation due to its simplicity and status as the default imputation method in many statistical packages. <span class="citation" data-cites="ATM8839">(<a href="#ref-ATM8839" role="doc-biblioref">Zhang 2016</a>)</span></p>
+<hr>
+<section id="what-is-missing-data-and-imputation" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-missing-data-and-imputation">1.1 What is Missing Data and Imputation?</h2>
 <p>Missing data is a critical issue that can lead to global crises and cybersecurity threats. Researchers have struggled with univariate imputation and deletion, but modern methods are being tested to find the best missing data handling solutions. Multivariate chained equation imputation is a method that prevents missing data during data collection. Bayesian posterior distribution simulation has been improved by researchers. Missing data in data analysis reduces model accuracy, and unknown data detection methods like MCAR and MAR are necessary. Single imputation and deletion are the simplest assumptions, while maximum likelihood and multiple imputation are optimal for missing data. Reliable statistical results require identifying missingness processes to ensure accurate data analysis.</p>
 <p>Missing completely at random (MCAR) is best described as data missing entirely at random and unrelated to observed or unobserved factors. Missing at random (MAR) describes a missing variable due to other observed variables within the data set. Missing depending on unobserved predictors (MNAR) describes the missing variable due to unobserved factors within our data set. Missingness that depends on the missing value describes missing data due to the information the participant does not want to make available.</p>
-<p>When data is missing in a dataset, it can be handled in two ways. First would be to simply delete the missing data from the dataset. This is generally the best method if the data is missing at random and makes up for a small amount of the larger dataset. If the data is not missing at random, or if deleting it would remove a substantial amount of the data, there is a statistical technique to handle missing data known as “imputation.” The most common type of imputation is single and multiple. “In single imputation, imputed values are considered as actual values. Single imputation ignores the fact that the actual value cannot be predicted for sure by any imputation method. Single imputation based methods do not consider the uncertainty of the imputed values. Instead, they recognize the imputed values as actual values in subsequent analysis.” <span class="citation" data-cites="khan2020">(<a href="#ref-khan2020" role="doc-biblioref">Khan and Hoque 2020</a>)</span> Single imputation replaces missing values by using multiple methods, such as replacing the missing value by copying the previous participants’ value, copying over the worst value in the data set, or calculating the mean for the variable. With a single imputation, there is no distinction between observed and imputed values, which could lead to bias, influenced by outliers, can spread errors, no way to detect the imputed values, and this methodology cannot be used for complex data. Despite these drawbacks, simple imputation is one of the most popular types of imputation due to its simplicity and status as the default imputation method in many statistical packages. <span class="citation" data-cites="ATM8839">(<a href="#ref-ATM8839" role="doc-biblioref">Zhang 2016</a>)</span></p>
+<p><img src="imgs/introFig1.png" class="img-fluid"></p>
+<p>Table 1. Missing data mechanisms explained.</p>
+</section>
+<section id="imputation" class="level2">
+<h2 class="anchored" data-anchor-id="imputation">1.2 Imputation</h2>
 <p>“Multivariate Imputation by Chained Equation (MICE) predicts missing data using the existing data of other variables. Then it replaces missing values using the predicted values and creates a dataset called imputed dataset. By iteration, it creates multiple imputed datasets. Each dataset is then analyzed using standard statistical analysis techniques, and multiple analysis results are provided.” <span class="citation" data-cites="khan2020">(<a href="#ref-khan2020" role="doc-biblioref">Khan and Hoque 2020</a>)</span> The downside of this methodology is that it can be complex to implement, assumes that the data is missing at random, has a risk of overfitting, and requires many resources; however, it has the ability to impute more accurate data than single imputation based on underlying patterns in the data.</p>
 
 
 
+</section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
 <div id="ref-khan2020" class="csl-entry" role="doc-biblioentry">

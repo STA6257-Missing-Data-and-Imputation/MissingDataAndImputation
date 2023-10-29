@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Data</title>
+<title>2. Data</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -151,7 +151,7 @@ div.csl-indent {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Data</h1>
+      <h1 class="quarto-secondary-nav-title">2. Data</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -223,14 +223,21 @@ div.csl-indent {
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#variables" id="toc-variables" class="nav-link active" data-scroll-target="#variables">2.1 Variables</a></li>
+  <li><a href="#data-exploration" id="toc-data-exploration" class="nav-link" data-scroll-target="#data-exploration">2.2 Data Exploration</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Data</h1>
+<h1 class="title d-none d-lg-block">2. Data</h1>
 </div>
 
 
@@ -246,7 +253,8 @@ div.csl-indent {
 </header>
 
 <p>This project will focus on the penguin dataset in the “palmerpenguin” package <span class="citation" data-cites="palmerpenguins">(<a href="#ref-palmerpenguins" role="doc-biblioref">Horst, Hill, and Gorman 2020</a>)</span> from R studio. The penguins’ dataset is comprised of 8 columns and 344 rows based on data collected on three different species of penguins in Palmer Archipelago, Antarctica. This dataset is fairly clean, and this is important for comparison purposes. In this instance, there are only 11 NA values, which is 3% of the entire dataset. During the analysis, we will be removing parts of the dataset and implementing data imputation methodology to compare the accuracy between the actual values in the dataset and the calculated values we have created using different methodologies.</p>
-<p>2.1 Variables</p>
+<section id="variables" class="level2">
+<h2 class="anchored" data-anchor-id="variables">2.1 Variables</h2>
 <ul>
 <li>Species - defines the species of the penguins as Adelie, Chinstrap, or Gentoo</li>
 <li>Island - what island (Biscoe, Dream, or Torgersen) the penguins were found in the Palmer Archipelago, Antarctica</li>
@@ -264,6 +272,9 @@ div.csl-indent {
 <p></p><figcaption class="figure-caption"><span class="citation" data-cites="palmerpenguins">(<a href="#ref-palmerpenguins" role="doc-biblioref">Horst, Hill, and Gorman 2020</a>)</span> Artwork by @allison_horst</figcaption><p></p>
 </figure>
 </div>
+</section>
+<section id="data-exploration" class="level2">
+<h2 class="anchored" data-anchor-id="data-exploration">2.2 Data Exploration</h2>
 <p>Below is a summary of the palmerpenguins dataset <span class="citation" data-cites="palmerpenguins">(<a href="#ref-palmerpenguins" role="doc-biblioref">Horst, Hill, and Gorman 2020</a>)</span> using the summarytools <span class="citation" data-cites="summarytools">(<a href="#ref-summarytools" role="doc-biblioref">Comtois 2022</a>)</span> package and visualizations from the palmerpenguins package. <span class="citation" data-cites="palmerpenguins">(<a href="#ref-palmerpenguins" role="doc-biblioref">Horst, Hill, and Gorman 2020</a>)</span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Shows the first six rows of the data set</span></span>
@@ -328,6 +339,7 @@ N: 344
 
 
 
+</section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
 <div id="ref-summarytools" class="csl-entry" role="doc-biblioentry">
