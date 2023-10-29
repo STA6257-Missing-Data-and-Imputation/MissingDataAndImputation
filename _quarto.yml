@@ -9,8 +9,14 @@ website:
     contents:
         - section: "Project"
           contents:
-            - href: index.qmd
-              text: Home
+            - href: intro.qmd
+              text: Introduction
+            - href: data.qmd
+              text: Data
+            - href: methodology.qmd
+              text: Methodology
+            - href: analysis.qmd
+              text: Analysis
         - section: "About"
           contents:
           - href: about.qmd
