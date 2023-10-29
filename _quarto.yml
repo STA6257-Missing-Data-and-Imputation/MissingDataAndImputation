@@ -4,8 +4,15 @@ project:
 
 website:
   sidebar:
+    tools:
+      - icon: house
+        href: index.qmd
+      - icon: github
+        href: https://github.com/STA6257-Missing-Data-and-Imputation/MissingDataAndImputation
+
     style: "docked"
     search: true
+
     contents:
         - section: "Project"
           contents:
@@ -21,8 +28,6 @@ website:
           contents:
           - href: about.qmd
             text: Team
-          - text: Github
-            href: https://github.com/STA6257-Missing-Data-and-Imputation/MissingDataAndImputation
 
       
 
