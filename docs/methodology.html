@@ -20,6 +20,25 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
 </style>
 
 
@@ -173,10 +192,10 @@ ul.task-list li input[type="checkbox"] {
 <p>Techniques for addressing missing data can be simplified into conventional approaches or brought up to date through the application of more recent methods. Although it goes without saying that the more recent methods are always preferable, there are instances in which the older methods could be useful. Also, we have to figure out why the straightforward approaches are not producing the desired results.</p>
 <section id="traditional-methods" class="level2">
 <h2 class="anchored" data-anchor-id="traditional-methods">3.1 Traditional Methods</h2>
-<p>Deleted records and single-valued imputation are two of the more traditional approaches to handling missing data [27]. In a complete-case analysis, also known as list-wise deletion, missing values are completely removed from the dataset and thrown away. As a countermeasure to the loss of data that results from list-wise deletion, pair-wise deletion eliminates only incomplete cases (Table 3).</p>
+<p>Deleted records and single-valued imputation are two of the more traditional approaches to handling missing data <span class="citation" data-cites="alruhaymi2021">(<a href="#ref-alruhaymi2021" role="doc-biblioref">Alruhaymi and Kim 2021</a>)</span>. In a complete-case analysis, also known as list-wise deletion, missing values are completely removed from the dataset and thrown away. As a countermeasure to the loss of data that results from list-wise deletion, pair-wise deletion eliminates only incomplete cases (Table 3).</p>
 <p>This strategy is useful for addressing very few missing data in the dataset and may not introduce bias into the study. Nevertheless, doing so will deprive the research of essential information, despite the fact that this was traditionally the strategy in quantitative research that was utilized most frequently to treat missing data. Another simple solution for missing data is to impute it with a mean or median value, however doing so introduces bias into the study because it reduces the range of possible data point values.</p>
 <p><img src="imgs/methTable3.png" class="img-fluid"></p>
-<p>Table 3. Examples of list wise deletion and pair wise deletion [28].</p>
+<p>Table 3. Examples of list wise deletion and pair wise deletion <span class="citation" data-cites="alruhaymi2021">(<a href="#ref-alruhaymi2021" role="doc-biblioref">Alruhaymi and Kim 2021</a>)</span>.</p>
 <p>When it comes to imputation using linear regression, a correlation matrix is utilized in order to identify a limited number of predictors of the variables that are missing values. The variables that are the best predictors are utilized as predictor variables, and the variable that has missing data is used as the dependent variable in the regression equation. This equation is then used to make predictions about the values that are missing. Imputation based on stochastic regression is an improvement on imputation that is based on linear regression. Linear regression-based imputation involves adding random noise components to a regression line in order to restore lost variability in the data.</p>
 <p>There are also general procedures, scale-item techniques, and time-series techniques that fall within the category of conventional methods.</p>
 <p>Enders provided a concise summary of the traditional methods for missingness mechanisms, which we may think of as a road map for dealing with missing data and which can be found in Table 4.</p>
@@ -186,19 +205,24 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="modern-imputation-techniques">3.2 Modern Imputation Techniques</h2>
 <p>Dealing with missing values is the most difficult process since the exact nature of the missing data is unknown, which makes the task more difficult. Multiple imputations and maximum likelihood are the “state of the art” methods that have dealt with the problem of managing missing data in a satisfactory manner. The concept of multiple imputations and how they operate will be the primary focus of this dissertation.</p>
 <ol type="1">
-<li><p>The method known as multiple imputations [30] is widely regarded as the most effective strategy for dealing with the issue of missing data. This is because it generates numerous copies of the dataset, each of which contains a unique set of imputed values.</p></li>
-<li><p>Maximum-likelihood imputation [31], which is based on a variance-covariance matrix for the variables and uses all of the data points that are currently available to determine what values should be imputed for missing data.</p></li>
+<li><p>The method known as multiple imputations <span class="citation" data-cites="alruhaymi2021">(<a href="#ref-alruhaymi2021" role="doc-biblioref">Alruhaymi and Kim 2021</a>)</span> is widely regarded as the most effective strategy for dealing with the issue of missing data. This is because it generates numerous copies of the dataset, each of which contains a unique set of imputed values.</p></li>
+<li><p>Maximum-likelihood imputation <span class="citation" data-cites="alruhaymi2021">(<a href="#ref-alruhaymi2021" role="doc-biblioref">Alruhaymi and Kim 2021</a>)</span>, which is based on a variance-covariance matrix for the variables and uses all of the data points that are currently available to determine what values should be imputed for missing data.</p></li>
 </ol>
 <p>When applied to MCAR and MAR data, multiple imputations result in results that are objective. Using methods of multiple imputation to handle missing data has a number of advantages that come with it. The most important advantage is that using these methods reduces the amount of bias that is present in the dataset when it is analyzed. In addition to this, they improve the accuracy of the data, which in turn helps to advance the validity of an experiment that is being carried out utilizing the data. Again, when the data values within a dataset are brought closer together through the use of imputation methods, there is an increase in the precision of the data. Imputation procedures, on the other hand, contribute to a more accurate statistical analysis since they make a dataset less susceptible to being skewed by outliers.</p>
-<p>The expectation-maximization algorithm and the Bayesian simulation approach are two further examples of methods [32].</p>
+<p>The expectation-maximization algorithm and the Bayesian simulation approach are two further examples of methods <span class="citation" data-cites="alruhaymi2021">(<a href="#ref-alruhaymi2021" role="doc-biblioref">Alruhaymi and Kim 2021</a>)</span>.</p>
 <p><img src="imgs/methTable4.png" class="img-fluid"></p>
-<p>Table 4. Summary of traditional ways of treating missing data [29].</p>
-<p>In the realm of data imputation, a relatively new method of imputation known as MICE has gained widespread acceptance [33]. As a result of this, the MICE technique, in conjunction with multiple imputations, has been investigated and utilized throughout this dissertation. In the following chapter, you will find a more in-depth discussion on the topic of multiple imputations, as well as MICE and its application to the analysis.`</p>
+<p>Table 4. Summary of traditional ways of treating missing data <span class="citation" data-cites="alruhaymi2021">(<a href="#ref-alruhaymi2021" role="doc-biblioref">Alruhaymi and Kim 2021</a>)</span>.</p>
+<p>In the realm of data imputation, a relatively new method of imputation known as MICE has gained widespread acceptance <span class="citation" data-cites="alruhaymi2021">(<a href="#ref-alruhaymi2021" role="doc-biblioref">Alruhaymi and Kim 2021</a>)</span>. As a result of this, the MICE technique, in conjunction with multiple imputations, has been investigated and utilized throughout this dissertation. In the following chapter, you will find a more in-depth discussion on the topic of multiple imputations, as well as MICE and its application to the analysis.`</p>
+
 
 
 </section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-alruhaymi2021" class="csl-entry" role="doc-biblioentry">
+Alruhaymi, Abdullah Z., and Charles J. Kim. 2021. <span>“Study on the Missing Data Mechanisms and Imputation Methods.”</span> <em>Open Journal of Statistics</em> 11 (04): 477–92. <a href="https://doi.org/10.4236/ojs.2021.114030">https://doi.org/10.4236/ojs.2021.114030</a>.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
