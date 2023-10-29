@@ -1,6 +1,7 @@
 ---
 title: "Analysis"
 bibliography: references.bib
+css: styles.css
 ---
 
 

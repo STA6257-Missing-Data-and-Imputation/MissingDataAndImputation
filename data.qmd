@@ -1,4 +1,5 @@
 ---
 title: "Data"
 bibliography: references.bib
+css: styles.css
 ---

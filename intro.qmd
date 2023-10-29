@@ -1,6 +1,7 @@
 ---
 title: "Introduction"
 bibliography: references.bib
+css: styles.css
 ---
 
 As much as researchers may attempt to eliminate or reduce missing values, datasets are rarely, if ever, perfect, which can impact the legitimacy and reliability of the results obtained. There are four main reasons for missing data: missing completely at random, missing at random, missing depending on unobserved predictors, and missingness that depends on the missing value itself.

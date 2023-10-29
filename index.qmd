@@ -4,8 +4,6 @@ bibliography: references.bib
 css: styles.css
 ---
 
-::: centered
 This is the group project for Advanced Statistical Modeling (STA6257) where we will explore how to use statistical methods to handle missing data in a dataset with a practice called imputation. Our team consists of Yoseling Gomez, Clayton Carpenter, and Stesh Davis-Lewis.
 
 Please use the sidebar to navigate our projects pages.
-:::
