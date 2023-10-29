@@ -15,7 +15,7 @@ When data is missing in a dataset, it can be handled in two ways. First would be
 
 "Multivariate Imputation by Chained Equation (MICE) predicts missing data using the existing data of other variables. Then it replaces missing values using the predicted values and creates a dataset called imputed dataset. By iteration, it creates multiple imputed datasets. Each dataset is then analyzed using standard statistical analysis techniques, and multiple analysis results are provided." [@khan2020] The downside of this methodology is that it can be complex to implement, assumes that the data is missing at random, has a risk of overfitting, and requires many resources; however, it has the ability to impute more accurate data than single imputation based on underlying patterns in the data.
 
-To demonstrate the benefits of imputation, we will create missingness in a predictor variable and create a model by excluding the missing data. Then we will perform imputation on the dataset and recreate the model to see if there is a difference in performance. Before we perform imputations on the penguins [@palmerpenguins] dataset, first the data must be cleaned to omit all incomplete records so we can have the actual values to compare our imputations against. The code block below demonstrates the penguins dataset that we will be using, cleaning the incomplete records, and displays the correlation using the ggplot2 \[@ggplot2\] package between body_mass_g and flipper_legth_mm that we will be using to construct a model before and after imputation of missing data.
+To demonstrate the benefits of imputation, we will create missingness in a predictor variable and create a model by excluding the missing data. Then we will perform imputation on the dataset and recreate the model to see if there is a difference in performance. Before we perform imputations on the penguins [@palmerpenguins] dataset, first the data must be cleaned to omit all incomplete records so we can have the actual values to compare our imputations against. The code block below demonstrates the penguins dataset that we will be using, cleaning the incomplete records, and displays the correlation using the ggplot2 [@ggplot2] package between body_mass_g and flipper_legth_mm that we will be using to construct a model before and after imputation of missing data.
 
 ```{r}
 #| warning: false
@@ -82,7 +82,7 @@ print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model 
 
 ```
 
-As shown in the R-Squared output for each model. We can see a small improvement in the accuracy of this model by performing imputation. This accuracy was possible since there wasnt an issue with missing values in species, bill_length_mm, and bill_depth_mm which were used to impute flipper_length_mm. But what happens if these variables contained large amounts of missing values that must be replaced as well? 
+As shown in the R-Squared output for each model. We can see a small improvement in the accuracy of this model by performing imputation. This accuracy was possible since there wasnt an issue with missing values in species, bill_length_mm, and bill_depth_mm which were used to impute flipper_length_mm. But what happens if these variables contained large amounts of missing values that must be replaced as well?
 
 ```{r}
 penguins_missing <- delete_MCAR(penguins,0.5,c("flipper_length_mm","bill_length_mm","bill_depth_mm","body_mass_g","species","sex"))

@@ -3,12 +3,22 @@ project:
   output-dir: docs
 
 website:
-  title: "Missing Data And Imputation"
-  navbar:
-    left:
-      - href: index.qmd
-        text: Home
-      - about.qmd
+  sidebar:
+    style: "docked"
+    search: true
+    contents:
+        - section: "Project"
+          contents:
+            - href: index.qmd
+              text: Home
+        - section: "About"
+          contents:
+          - href: about.qmd
+            text: Team
+          - text: Github
+            href: https://github.com/STA6257-Missing-Data-and-Imputation/MissingDataAndImputation
+
+      
 
 format:
   html:
