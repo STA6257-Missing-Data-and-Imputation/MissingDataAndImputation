@@ -7,3 +7,9 @@ css: styles.css
 This is the group project for Advanced Statistical Modeling (STA6257) where we will explore how to use statistical methods to handle missing data in a dataset with a practice called imputation. Our team consists of Yoseling Gomez, Clayton Carpenter, and Stesh Davis-Lewis.
 
 Please use the sidebar to navigate our projects pages.
+
+The dataset we will be using is palmerpenguins [@palmerpenguins]
+
+[![](imgs/lter_penguins.png){fig-align="center"}](https://allisonhorst.github.io/palmerpenguins/index.html)
+
+[@palmerpenguins] Artwork by \@allison_horst
