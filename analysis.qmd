@@ -40,11 +40,11 @@ In the code block below, we will create 50% missing at random data in the column
 penguins_missing <- delete_MCAR(penguins,0.5,"flipper_length_mm")
 
 regg = lm(body_mass_g~ flipper_length_mm, data = penguins_missing, na.action=na.omit) 
-print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where missing values are excluded from the dataset."))
+#print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where missing values are excluded from the dataset."))
 
 ```
 
-Although this R-Squared is good, it omits half of the data since 50% of the values for flipper_length_mm are missing. In the following code blocks, we will explore imputation of the the missing data.
+0.7569 is the R-Squared for the linear model where missing values are excluded from the dataset. Although this R-Squared is good, it omits half of the data since 50% of the values for flipper_length_mm are missing. In the following code blocks, we will explore imputation of the the missing data.
 
 ## 4.2 Single Imputation
 
@@ -60,11 +60,11 @@ penguins_Mean_imputated$flipper_length_mm[is.na(penguins_Mean_imputated$flipper_
 penguins_Mean_imputated[!complete.cases(penguins), ]
 
 regg = lm(body_mass_g~ flipper_length_mm, data = penguins_Mean_imputated, na.action=na.omit)
-print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where missing values are imputed as the mean."))
+#print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where missing values are imputed as the mean."))
 
 ```
 
-As we can see the R-Squared dramatically decreased since we performed a basic version of imputation that just inserts one number for all missing values. Now we will proceed to impute linear model predicted values using the simputation [@simputation] package into the missing data set for bill_length_mm and construct the same model to achieve an increase in r-squared.
+0.4016 is the R-Squared for the linear model where missing values are imputed as the mean. As we can see the R-Squared dramatically decreased since we performed a basic version of imputation that just inserts one number for all missing values. Now we will proceed to impute linear model predicted values using the simputation [@simputation] package into the missing data set for bill_length_mm and construct the same model to achieve an increase in r-squared.
 
 ## 4.3 Multiple Imputation
 
@@ -73,9 +73,11 @@ As we can see the R-Squared dramatically decreased since we performed a basic ve
 penguins_imputed <- impute_lm(penguins_missing, flipper_length_mm ~ species + bill_length_mm + bill_depth_mm)
 
 regg = lm(body_mass_g~ flipper_length_mm, data = penguins_imputed)
-print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling."))
+#print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling."))
 
 ```
+
+0.7732 is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling.
 
 ## 4.4 Other Considerations
 
@@ -124,6 +126,8 @@ penguins_Mean_imputated[!complete.cases(penguins_Mean_imputated), ]
 penguins_imputed <- impute_lm(penguins_Mean_imputated, flipper_length_mm ~ species + bill_length_mm + bill_depth_mm)
 
 regg = lm(body_mass_g~ flipper_length_mm, data = penguins_imputed)
-print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling."))
+#print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling."))
 
 ```
+
+0.4016 is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling.
