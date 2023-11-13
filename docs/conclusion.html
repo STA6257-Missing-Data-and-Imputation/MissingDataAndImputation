@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>1. Introduction</title>
+<title>5. Conclusion</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,25 +19,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
-}
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
 }
 </style>
 
@@ -88,7 +69,7 @@ div.csl-indent {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">1. Introduction</h1>
+      <h1 class="quarto-secondary-nav-title">5. Conclusion</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -120,7 +101,7 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro.html" class="sidebar-item-text sidebar-link active">Introduction</a>
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">Introduction</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -136,6 +117,11 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./analysis.html" class="sidebar-item-text sidebar-link">Analysis</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./conclusion.html" class="sidebar-item-text sidebar-link active">Conclusion</a>
   </div>
 </li>
       </ul>
@@ -160,21 +146,14 @@ div.csl-indent {
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#what-is-missing-data-and-imputation" id="toc-what-is-missing-data-and-imputation" class="nav-link active" data-scroll-target="#what-is-missing-data-and-imputation">1.1 What is Missing Data and Imputation?</a></li>
-  <li><a href="#imputation" id="toc-imputation" class="nav-link" data-scroll-target="#imputation">1.2 Imputation</a></li>
-  </ul>
-</nav>
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">1. Introduction</h1>
+<h1 class="title d-none d-lg-block">5. Conclusion</h1>
 </div>
 
 
@@ -189,31 +168,14 @@ div.csl-indent {
 
 </header>
 
-<p>As much as researchers may attempt to eliminate or reduce missing values, datasets are rarely, if ever, perfect, which can impact the legitimacy and reliability of the results obtained. There are four main reasons for missing data: missing completely at random, missing at random, missing depending on unobserved predictors, and missingness that depends on the missing value itself.</p>
-<p>When data is missing in a dataset, it can be handled in two ways. First would be to simply delete the missing data from the dataset. This is generally the best method if the data is missing at random and makes up for a small amount of the larger dataset. If the data is not missing at random, or if deleting it would remove a substantial amount of the data, there is a statistical technique to handle missing data known as “imputation.” The most common type of imputation is single and multiple. Single imputation treats imputed values as actual values, disregarding the uncertainty of the real value. This method disregards the uncertainty of imputed values and acknowledges them as equivalent to true values in later analysis, disregarding the unpredictability of real values. <span class="citation" data-cites="khan2020">(<a href="#ref-khan2020" role="doc-biblioref">Khan and Hoque 2020</a>)</span> Single imputation replaces missing values by using multiple methods, such as replacing the missing value by copying the previous participants’ value, copying over the worst value in the data set, or calculating the mean for the variable. With a single imputation, there is no distinction between observed and imputed values, which could lead to bias, influenced by outliers, can spread errors, no way to detect the imputed values, and this methodology cannot be used for complex data. Despite these drawbacks, simple imputation is one of the most popular types of imputation due to its simplicity and status as the default imputation method in many statistical packages. <span class="citation" data-cites="ATM8839">(<a href="#ref-ATM8839" role="doc-biblioref">Zhang 2016</a>)</span></p>
-<section id="what-is-missing-data-and-imputation" class="level2">
-<h2 class="anchored" data-anchor-id="what-is-missing-data-and-imputation">1.1 What is Missing Data and Imputation?</h2>
-<p>Missing data is a critical issue that can lead to global crises and cybersecurity threats. Researchers have struggled with univariate imputation and deletion, but modern methods are being tested to find the best missing data handling solutions. Multivariate chained equation imputation is a method that prevents missing data during data collection. Bayesian posterior distribution simulation has been improved by researchers. Missing data in data analysis reduces model accuracy, and unknown data detection methods like MCAR and MAR are necessary. Single imputation and deletion are the simplest assumptions, while maximum likelihood and multiple imputation are optimal for missing data. Reliable statistical results require identifying missingness processes to ensure accurate data analysis.</p>
-<p>Missing completely at random (MCAR) is best described as data missing entirely at random and unrelated to observed or unobserved factors. Missing at random (MAR) describes a missing variable due to other observed variables within the data set. Missing depending on unobserved predictors (MNAR) describes the missing variable due to unobserved factors within our data set. Missingness that depends on the missing value describes missing data due to the information the participant does not want to make available.</p>
-<p><img src="imgs/introFig1.png" class="img-fluid"></p>
-<p>Table 1. Missing data mechanisms explained.</p>
-</section>
-<section id="imputation" class="level2">
-<h2 class="anchored" data-anchor-id="imputation">1.2 Imputation</h2>
-<p>MICE, or Multivariate Imputation by Chained Equation, is a method that anticipates missing data by using existing data for other variables. It creates an imputed dataset by substituting predicted values for missing values. This process generates multiple imputed datasets through iteration, which are then assessed using conventional statistical methods. The results of multiple analyses are displayed. <span class="citation" data-cites="khan2020">(<a href="#ref-khan2020" role="doc-biblioref">Khan and Hoque 2020</a>)</span> The downside of this methodology is that it can be complex to implement, assumes that the data is missing at random, has a risk of overfitting, and requires many resources; however, it has the ability to impute more accurate data than single imputation based on underlying patterns in the data.</p>
+<p>Although we would love to have a perfect dataset in every project, that is unrealistic. There will always be missing values due to four primary reasons: missing completely at random, missing at random, missing depending on unobserved predictors, and missingness that depends on the missing value itself.</p>
+<p>There may be different ways to handle these values depending on the reason and the count of missing values. The simplest method is to eliminate the rows with missing values; this method could be used for the penguins dataset we used in this project since only 11 rows had missing values, about 3% of the entire dataset. However, we selected this dataset to demonstrate simple and multiple imputations against a relatively clean dataset.</p>
+<p>For simple imputation, we removed half of the values in the flipper_length_mm, resulting in a 0.7569 R-squared, which is a good result. However, when we replaced the missing values with the mean value, we saw a decrease to 0.4016 R-squared—moving on to multiple imputations for species, bill_length_mm, and bill_depth_mm result in an r-square value of 0.7732.</p>
+<p>Not all imputation methods yield the same results and may not closely match the original values. Always research the best methodology to impute missing values since it will vary by case, and each methodology has benefits and drawbacks.</p>
 
 
 
-</section>
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
-<div id="ref-khan2020" class="csl-entry" role="doc-biblioentry">
-Khan, Shahidul Islam, and Abu Sayed Md Latiful Hoque. 2020. <span>“SICE: An Improved Missing Data Imputation Technique.”</span> <em>Journal of Big Data</em> 7 (1). <a href="https://doi.org/10.1186/s40537-020-00313-w">https://doi.org/10.1186/s40537-020-00313-w</a>.
-</div>
-<div id="ref-ATM8839" class="csl-entry" role="doc-biblioentry">
-Zhang, Zhongheng. 2016. <span>“Missing Data Imputation: Focusing on Single Imputation.”</span> <em>Annals of Translational Medicine</em> 4 (1). <a href="https://atm.amegroups.org/article/view/8839">https://atm.amegroups.org/article/view/8839</a>.
-</div>
-</div></section></div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

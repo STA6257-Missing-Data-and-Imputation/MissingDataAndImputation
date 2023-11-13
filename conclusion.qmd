@@ -1,0 +1,13 @@
+---
+title: "5. Conclusion"
+bibliography: references.bib
+css: styles.css
+---
+
+Although we would love to have a perfect dataset in every project, that is unrealistic. There will always be missing values due to four primary reasons: missing completely at random, missing at random, missing depending on unobserved predictors, and missingness that depends on the missing value itself. 
+
+There may be different ways to handle these values depending on the reason and the count of missing values. The simplest method is to eliminate the rows with missing values; this method could be used for the penguins dataset we used in this project since only 11 rows had missing values, about 3% of the entire dataset. However, we selected this dataset to demonstrate simple and multiple imputations against a relatively clean dataset. 
+
+For simple imputation, we removed half of the values in the flipper_length_mm, resulting in a 0.7569 R-squared, which is a good result. However, when we replaced the missing values with the mean value, we saw a decrease to 0.4016 R-squared—moving on to multiple imputations for species, bill_length_mm, and bill_depth_mm result in an r-square value of 0.7732. 
+
+Not all imputation methods yield the same results and may not closely match the original values. Always research the best methodology to impute missing values since it will vary by case, and each methodology has benefits and drawbacks. 

@@ -4,9 +4,9 @@ bibliography: references.bib
 css: styles.css
 ---
 
-## 4.1 Creating Missingness
+## 4.1 Linear Regression on Full Dataset
 
-To demonstrate the benefits of imputation, we will create missingness in a predictor variable and create a model by excluding the missing data. Then we will perform imputation on the dataset and recreate the model to see if there is a difference in performance. Before we perform imputations on the penguins [@palmerpenguins] dataset, first the data must be cleaned to omit all incomplete records so we can have the actual values to compare our imputations against. The code block below demonstrates the penguins dataset that we will be using, cleaning the incomplete records, and displays the correlation using the ggplot2 [@ggplot2] package between body_mass_g and flipper_legth_mm that we will be using to construct a model before and after imputation of missing data.
+In order to understand the benefits of imputation, we need to perform a linear regression on the entire data set in order to have a reference for what the R-Squared value can be will all of the available data.
 
 ```{r}
 #| warning: false
@@ -20,6 +20,19 @@ set.seed(1)
 
 penguins <- readr::read_csv('penguins.csv')
 
+regg = lm(body_mass_g~ flipper_length_mm, data = penguins)
+
+#print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model"))
+
+```
+
+0.7583 is the R-Squared for the linear model that we will use as the benchmark for the imputation perfromed below.
+
+## 4.2 Creating Missingness
+
+To demonstrate the benefits of imputation, we will create missingness in a predictor variable and create a model by excluding the missing data. Then we will perform imputation on the dataset and recreate the model to see if there is a difference in performance. Before we perform imputations on the penguins [@palmerpenguins] dataset, first the data must be cleaned to omit all incomplete records so we can have the actual values to compare our imputations against. The code block below demonstrates the penguins dataset that we will be using, cleaning the incomplete records, and displays the correlation using the ggplot2 [@ggplot2] package between body_mass_g and flipper_legth_mm that we will be using to construct a model before and after imputation of missing data.
+
+```{r}
 
 penguin_rows_with_na <- penguins[!complete.cases(penguins), ]
 print(penguin_rows_with_na)
@@ -33,7 +46,7 @@ ggplot(penguins_filtered, aes(body_mass_g, flipper_length_mm)) +
 
 ```
 
-In the code block below, we will create 50% missing at random data in the column flipper_length_mm using the missMethods [@missMethods] package. Then we will create a linear regression to display the r-squared that would be achieved without performing any imputation on the data set.
+In the code block below, we will create 50% missing at random data in the column flipper_length_mm using the missMethods [@missMethods] package. Then we will create a linear regression to display the r-squared that would be achieved by deleting the missing data from the data set.
 
 ```{r}
 #| warning: false
@@ -46,7 +59,9 @@ regg = lm(body_mass_g~ flipper_length_mm, data = penguins_missing, na.action=na.
 
 0.7569 is the R-Squared for the linear model where missing values are excluded from the dataset. Although this R-Squared is good, it omits half of the data since 50% of the values for flipper_length_mm are missing. In the following code blocks, we will explore imputation of the the missing data.
 
-## 4.2 Single Imputation
+## 4.3 Single Imputation
+
+The most simple way to perform imputation is with the mean or median of the variable. However doing so will reduce the overall variability in the dataset.
 
 ```{r}
 #| warning: false
@@ -64,9 +79,27 @@ regg = lm(body_mass_g~ flipper_length_mm, data = penguins_Mean_imputated, na.act
 
 ```
 
-0.4016 is the R-Squared for the linear model where missing values are imputed as the mean. As we can see the R-Squared dramatically decreased since we performed a basic version of imputation that just inserts one number for all missing values. Now we will proceed to impute linear model predicted values using the simputation [@simputation] package into the missing data set for bill_length_mm and construct the same model to achieve an increase in r-squared.
+0.4016 is the R-Squared for the linear model where missing values are imputed as the mean.
 
-## 4.3 Multiple Imputation
+```{r}
+#| warning: false
+# Make a copy of the dataset and calculate the mean of the specific column
+penguins_Median_imputated <- penguins_missing
+
+
+# If we only replaced the missing values for flipper_length_mm
+flipper_length_mm_median_value <- median(penguins$flipper_length_mm, na.rm = TRUE)
+penguins_Median_imputated$flipper_length_mm[is.na(penguins_Median_imputated$flipper_length_mm)] <- flipper_length_mm_median_value
+penguins_Median_imputated[!complete.cases(penguins), ]
+
+regg = lm(body_mass_g~ flipper_length_mm, data = penguins_Median_imputated, na.action=na.omit)
+print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where missing values are imputed as the median."))
+
+```
+
+0.4037 is the R-Squared for the linear model where missing values are imputed as the median.
+
+As we can see the R-Squared dramatically decreased since we performed a basic version of imputation that just inserts one number for all missing values. Now we will proceed to impute linear model predicted values using the simputation [@simputation] package into the missing data set for bill_length_mm and construct the same model to achieve an increase in r-squared.
 
 ```{r}
 #| warning: false
@@ -79,7 +112,23 @@ regg = lm(body_mass_g~ flipper_length_mm, data = penguins_imputed)
 
 0.7732 is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling.
 
-## 4.4 Other Considerations
+## 4.4 Multiple Imputation
+
+To use a more complex form of imputation, we will perform multiple imputation on the data set using the mice library [@mice].
+
+```{r}
+#| warning: false
+
+library(mice)
+penguins_missing.imp <- mice(penguins_missing, m=5)
+fit <- with(penguins_missing.imp, lm(body_mass_g~ flipper_length_mm))
+print(pool.r.squared(fit))
+
+```
+
+Since multiple imputation creates multiple linear regressions based on multiple imputations, the estimated r-value is 0.7317 with a 95% confidence interval between 0.6664 and 0.7861. Although the R-Squared estimate is lower than the single imputation based on linear regression, this method performs much better than mean and median single imputations performed previously.
+
+## 4.5 Other Considerations
 
 As shown in the R-Squared output for each model. We can see a small improvement in the accuracy of this model by performing imputation. This accuracy was possible since there wasnt an issue with missing values in species, bill_length_mm, and bill_depth_mm which were used to impute flipper_length_mm. But what happens if these variables contained large amounts of missing values that must be replaced as well?
 

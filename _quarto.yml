@@ -24,6 +24,8 @@ website:
               text: Methodology
             - href: analysis.qmd
               text: Analysis
+            - href: conclusion.qmd
+              text: Conclusion
         - section: "About"
           contents:
           - href: about.qmd
