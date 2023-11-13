@@ -233,10 +233,10 @@ div.csl-indent {
    
   <ul>
   <li><a href="#linear-regression-on-full-dataset" id="toc-linear-regression-on-full-dataset" class="nav-link active" data-scroll-target="#linear-regression-on-full-dataset">4.1 Linear Regression on Full Dataset</a></li>
-  <li><a href="#creating-missingness" id="toc-creating-missingness" class="nav-link" data-scroll-target="#creating-missingness">4.1 Creating Missingness</a></li>
-  <li><a href="#single-imputation" id="toc-single-imputation" class="nav-link" data-scroll-target="#single-imputation">4.2 Single Imputation</a></li>
-  <li><a href="#multiple-imputation" id="toc-multiple-imputation" class="nav-link" data-scroll-target="#multiple-imputation">4.3 Multiple Imputation</a></li>
-  <li><a href="#other-considerations" id="toc-other-considerations" class="nav-link" data-scroll-target="#other-considerations">4.4 Other Considerations</a></li>
+  <li><a href="#creating-missingness" id="toc-creating-missingness" class="nav-link" data-scroll-target="#creating-missingness">4.2 Creating Missingness</a></li>
+  <li><a href="#single-imputation" id="toc-single-imputation" class="nav-link" data-scroll-target="#single-imputation">4.3 Single Imputation</a></li>
+  <li><a href="#multiple-imputation" id="toc-multiple-imputation" class="nav-link" data-scroll-target="#multiple-imputation">4.4 Multiple Imputation</a></li>
+  <li><a href="#other-considerations" id="toc-other-considerations" class="nav-link" data-scroll-target="#other-considerations">4.5 Other Considerations</a></li>
   </ul>
 </nav>
     </div>
@@ -262,6 +262,7 @@ div.csl-indent {
 
 <section id="linear-regression-on-full-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="linear-regression-on-full-dataset">4.1 Linear Regression on Full Dataset</h2>
+<p>In order to understand the benefits of imputation, we need to perform a linear regression on the entire data set in order to have a reference for what the R-Squared value can be will all of the available data.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(missMethods)</span>
@@ -274,18 +275,16 @@ div.csl-indent {
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>regg <span class="ot">=</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm, <span class="at">data =</span> penguins)</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="fu">summary</span>(regg)<span class="sc">$</span>adj.r.squared, <span class="st">"is the R-Squared for the linear model"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "0.758283673825816 is the R-Squared for the linear model"</code></pre>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">#print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model"))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
+<p>0.7583 is the R-Squared for the linear model that we will use as the benchmark for the imputation perfromed below.</p>
 </section>
 <section id="creating-missingness" class="level2">
-<h2 class="anchored" data-anchor-id="creating-missingness">4.1 Creating Missingness</h2>
+<h2 class="anchored" data-anchor-id="creating-missingness">4.2 Creating Missingness</h2>
 <p>To demonstrate the benefits of imputation, we will create missingness in a predictor variable and create a model by excluding the missing data. Then we will perform imputation on the dataset and recreate the model to see if there is a difference in performance. Before we perform imputations on the penguins <span class="citation" data-cites="palmerpenguins">(<a href="#ref-palmerpenguins" role="doc-biblioref">Horst, Hill, and Gorman 2020</a>)</span> dataset, first the data must be cleaned to omit all incomplete records so we can have the actual values to compare our imputations against. The code block below demonstrates the penguins dataset that we will be using, cleaning the incomplete records, and displays the correlation using the ggplot2 <span class="citation" data-cites="ggplot2">(<a href="#ref-ggplot2" role="doc-biblioref">Wickham 2016</a>)</span> package between body_mass_g and flipper_legth_mm that we will be using to construct a model before and after imputation of missing data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>penguin_rows_with_na <span class="ot">&lt;-</span> penguins[<span class="sc">!</span><span class="fu">complete.cases</span>(penguins), ]</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(penguin_rows_with_na)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>penguin_rows_with_na <span class="ot">&lt;-</span> penguins[<span class="sc">!</span><span class="fu">complete.cases</span>(penguins), ]</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(penguin_rows_with_na)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 11 × 8
    species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
@@ -303,12 +302,12 @@ div.csl-indent {
 11 Gentoo  Biscoe              NA            NA                  NA          NA
 # ℹ 2 more variables: sex &lt;chr&gt;, year &lt;dbl&gt;</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>penguins_filtered <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(penguins)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(penguins_filtered, <span class="fu">aes</span>(body_mass_g, flipper_length_mm)) <span class="sc">+</span> </span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_count</span>() <span class="sc">+</span> </span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">'lm'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>penguins_filtered <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(penguins)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(penguins_filtered, <span class="fu">aes</span>(body_mass_g, flipper_length_mm)) <span class="sc">+</span> </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_count</span>() <span class="sc">+</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">'lm'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
@@ -318,25 +317,25 @@ div.csl-indent {
 </div>
 <p>In the code block below, we will create 50% missing at random data in the column flipper_length_mm using the missMethods <span class="citation" data-cites="missMethods">(<a href="#ref-missMethods" role="doc-biblioref">Rockel 2022</a>)</span> package. Then we will create a linear regression to display the r-squared that would be achieved by deleting the missing data from the data set.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>penguins_missing <span class="ot">&lt;-</span> <span class="fu">delete_MCAR</span>(penguins,<span class="fl">0.5</span>,<span class="st">"flipper_length_mm"</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>regg <span class="ot">=</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm, <span class="at">data =</span> penguins_missing, <span class="at">na.action=</span>na.omit) </span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where missing values are excluded from the dataset."))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>penguins_missing <span class="ot">&lt;-</span> <span class="fu">delete_MCAR</span>(penguins,<span class="fl">0.5</span>,<span class="st">"flipper_length_mm"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>regg <span class="ot">=</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm, <span class="at">data =</span> penguins_missing, <span class="at">na.action=</span>na.omit) </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where missing values are excluded from the dataset."))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>0.7569 is the R-Squared for the linear model where missing values are excluded from the dataset. Although this R-Squared is good, it omits half of the data since 50% of the values for flipper_length_mm are missing. In the following code blocks, we will explore imputation of the the missing data.</p>
 </section>
 <section id="single-imputation" class="level2">
-<h2 class="anchored" data-anchor-id="single-imputation">4.2 Single Imputation</h2>
+<h2 class="anchored" data-anchor-id="single-imputation">4.3 Single Imputation</h2>
 <p>The most simple way to perform imputation is with the mean or median of the variable. However doing so will reduce the overall variability in the dataset.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a copy of the dataset and calculate the mean of the specific column</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>penguins_Mean_imputated <span class="ot">&lt;-</span> penguins_missing</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># If we only replaced the missing values for flipper_length_mm</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>flipper_length_mm_mean_value <span class="ot">&lt;-</span> <span class="fu">mean</span>(penguins<span class="sc">$</span>flipper_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>penguins_Mean_imputated<span class="sc">$</span>flipper_length_mm[<span class="fu">is.na</span>(penguins_Mean_imputated<span class="sc">$</span>flipper_length_mm)] <span class="ot">&lt;-</span> flipper_length_mm_mean_value</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>penguins_Mean_imputated[<span class="sc">!</span><span class="fu">complete.cases</span>(penguins), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a copy of the dataset and calculate the mean of the specific column</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>penguins_Mean_imputated <span class="ot">&lt;-</span> penguins_missing</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># If we only replaced the missing values for flipper_length_mm</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>flipper_length_mm_mean_value <span class="ot">&lt;-</span> <span class="fu">mean</span>(penguins<span class="sc">$</span>flipper_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>penguins_Mean_imputated<span class="sc">$</span>flipper_length_mm[<span class="fu">is.na</span>(penguins_Mean_imputated<span class="sc">$</span>flipper_length_mm)] <span class="ot">&lt;-</span> flipper_length_mm_mean_value</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>penguins_Mean_imputated[<span class="sc">!</span><span class="fu">complete.cases</span>(penguins), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 11 × 8
    species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
@@ -354,19 +353,19 @@ div.csl-indent {
 11 Gentoo  Biscoe              NA            NA                201.          NA
 # ℹ 2 more variables: sex &lt;chr&gt;, year &lt;dbl&gt;</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>regg <span class="ot">=</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm, <span class="at">data =</span> penguins_Mean_imputated, <span class="at">na.action=</span>na.omit)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where missing values are imputed as the mean."))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>regg <span class="ot">=</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm, <span class="at">data =</span> penguins_Mean_imputated, <span class="at">na.action=</span>na.omit)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where missing values are imputed as the mean."))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>0.4016 is the R-Squared for the linear model where missing values are imputed as the mean.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a copy of the dataset and calculate the mean of the specific column</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>penguins_Median_imputated <span class="ot">&lt;-</span> penguins_missing</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># If we only replaced the missing values for flipper_length_mm</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>flipper_length_mm_median_value <span class="ot">&lt;-</span> <span class="fu">median</span>(penguins<span class="sc">$</span>flipper_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>penguins_Median_imputated<span class="sc">$</span>flipper_length_mm[<span class="fu">is.na</span>(penguins_Median_imputated<span class="sc">$</span>flipper_length_mm)] <span class="ot">&lt;-</span> flipper_length_mm_median_value</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>penguins_Median_imputated[<span class="sc">!</span><span class="fu">complete.cases</span>(penguins), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a copy of the dataset and calculate the mean of the specific column</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>penguins_Median_imputated <span class="ot">&lt;-</span> penguins_missing</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># If we only replaced the missing values for flipper_length_mm</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>flipper_length_mm_median_value <span class="ot">&lt;-</span> <span class="fu">median</span>(penguins<span class="sc">$</span>flipper_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>penguins_Median_imputated<span class="sc">$</span>flipper_length_mm[<span class="fu">is.na</span>(penguins_Median_imputated<span class="sc">$</span>flipper_length_mm)] <span class="ot">&lt;-</span> flipper_length_mm_median_value</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>penguins_Median_imputated[<span class="sc">!</span><span class="fu">complete.cases</span>(penguins), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 11 × 8
    species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
@@ -384,28 +383,25 @@ div.csl-indent {
 11 Gentoo  Biscoe              NA            NA                 197          NA
 # ℹ 2 more variables: sex &lt;chr&gt;, year &lt;dbl&gt;</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>regg <span class="ot">=</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm, <span class="at">data =</span> penguins_Median_imputated, <span class="at">na.action=</span>na.omit)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="fu">summary</span>(regg)<span class="sc">$</span>adj.r.squared, <span class="st">"is the R-Squared for the linear model where missing values are imputed as the median."</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "0.403663788774948 is the R-Squared for the linear model where missing values are imputed as the median."</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>regg <span class="ot">=</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm, <span class="at">data =</span> penguins_Median_imputated, <span class="at">na.action=</span>na.omit)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where missing values are imputed as the median."))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>0.4037 is the R-Squared for the linear model where missing values are imputed as the median.</p>
 <p>As we can see the R-Squared dramatically decreased since we performed a basic version of imputation that just inserts one number for all missing values. Now we will proceed to impute linear model predicted values using the simputation <span class="citation" data-cites="simputation">(<a href="#ref-simputation" role="doc-biblioref">Loo 2022</a>)</span> package into the missing data set for bill_length_mm and construct the same model to achieve an increase in r-squared.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>penguins_imputed <span class="ot">&lt;-</span> <span class="fu">impute_lm</span>(penguins_missing, flipper_length_mm <span class="sc">~</span> species <span class="sc">+</span> bill_length_mm <span class="sc">+</span> bill_depth_mm)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>regg <span class="ot">=</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm, <span class="at">data =</span> penguins_imputed)</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling."))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>penguins_imputed <span class="ot">&lt;-</span> <span class="fu">impute_lm</span>(penguins_missing, flipper_length_mm <span class="sc">~</span> species <span class="sc">+</span> bill_length_mm <span class="sc">+</span> bill_depth_mm)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>regg <span class="ot">=</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm, <span class="at">data =</span> penguins_imputed)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling."))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>0.7732 is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling.</p>
 </section>
 <section id="multiple-imputation" class="level2">
-<h2 class="anchored" data-anchor-id="multiple-imputation">4.3 Multiple Imputation</h2>
+<h2 class="anchored" data-anchor-id="multiple-imputation">4.4 Multiple Imputation</h2>
 <p>To use a more complex form of imputation, we will perform multiple imputation on the data set using the mice library <span class="citation" data-cites="mice">(<a href="#ref-mice" role="doc-biblioref">Buuren and Groothuis-Oudshoorn 2011</a>)</span>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mice)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>penguins_missing.imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(penguins_missing, <span class="at">m=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mice)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>penguins_missing.imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(penguins_missing, <span class="at">m=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  iter imp variable
@@ -435,67 +431,67 @@ div.csl-indent {
   5   4  bill_length_mm  bill_depth_mm  flipper_length_mm  body_mass_g
   5   5  bill_length_mm  bill_depth_mm  flipper_length_mm  body_mass_g</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">with</span>(penguins_missing.imp, <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm))</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">pool.r.squared</span>(fit))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">with</span>(penguins_missing.imp, <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm))</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">pool.r.squared</span>(fit))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          est     lo 95     hi 95       fmi
 R^2 0.7404551 0.6794023 0.7915921 0.3094308</code></pre>
 </div>
 </div>
-<p>Since multiple imputation creates multiple linear regressions based on multiple imputations, the estimated r-value is 0.7317 with a 95% confidence interval between 0.6664 and 0.7861. Although the R-Squared estimate is lower than the single imputation based on linear regression, this method performs much better than mean and median single imputations.</p>
+<p>Since multiple imputation creates multiple linear regressions based on multiple imputations, the estimated r-value is 0.7317 with a 95% confidence interval between 0.6664 and 0.7861. Although the R-Squared estimate is lower than the single imputation based on linear regression, this method performs much better than mean and median single imputations performed previously.</p>
 </section>
 <section id="other-considerations" class="level2">
-<h2 class="anchored" data-anchor-id="other-considerations">4.4 Other Considerations</h2>
+<h2 class="anchored" data-anchor-id="other-considerations">4.5 Other Considerations</h2>
 <p>As shown in the R-Squared output for each model. We can see a small improvement in the accuracy of this model by performing imputation. This accuracy was possible since there wasnt an issue with missing values in species, bill_length_mm, and bill_depth_mm which were used to impute flipper_length_mm. But what happens if these variables contained large amounts of missing values that must be replaced as well?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>penguins_missing <span class="ot">&lt;-</span> <span class="fu">delete_MCAR</span>(penguins,<span class="fl">0.5</span>,<span class="fu">c</span>(<span class="st">"flipper_length_mm"</span>,<span class="st">"bill_length_mm"</span>,<span class="st">"bill_depth_mm"</span>,<span class="st">"body_mass_g"</span>,<span class="st">"species"</span>,<span class="st">"sex"</span>))</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tryCatch</span>(</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  {</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  penguins_imputed_missing <span class="ot">&lt;-</span> <span class="fu">impute_lm</span>(penguins_missing, flipper_length_mm <span class="sc">~</span> species <span class="sc">+</span> bill_length_mm <span class="sc">+</span> bill_depth_mm)</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  penguins_imputed_missing[<span class="sc">!</span><span class="fu">complete.cases</span>(penguins_imputed_missing), ]</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  regg <span class="ot">=</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm, <span class="at">data =</span> penguins_imputed_missing)</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">paste</span>(<span class="fu">summary</span>(regg)<span class="sc">$</span>adj.r.squared, <span class="st">"is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling."</span>))</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  },</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">error =</span> <span class="cf">function</span>(e) </span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  {</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="st">"This caused an error!"</span>) <span class="co"># or whatever error handling code you want</span></span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>penguins_missing <span class="ot">&lt;-</span> <span class="fu">delete_MCAR</span>(penguins,<span class="fl">0.5</span>,<span class="fu">c</span>(<span class="st">"flipper_length_mm"</span>,<span class="st">"bill_length_mm"</span>,<span class="st">"bill_depth_mm"</span>,<span class="st">"body_mass_g"</span>,<span class="st">"species"</span>,<span class="st">"sex"</span>))</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tryCatch</span>(</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  penguins_imputed_missing <span class="ot">&lt;-</span> <span class="fu">impute_lm</span>(penguins_missing, flipper_length_mm <span class="sc">~</span> species <span class="sc">+</span> bill_length_mm <span class="sc">+</span> bill_depth_mm)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  penguins_imputed_missing[<span class="sc">!</span><span class="fu">complete.cases</span>(penguins_imputed_missing), ]</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  regg <span class="ot">=</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm, <span class="at">data =</span> penguins_imputed_missing)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">paste</span>(<span class="fu">summary</span>(regg)<span class="sc">$</span>adj.r.squared, <span class="st">"is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling."</span>))</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  },</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">error =</span> <span class="cf">function</span>(e) </span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="st">"This caused an error!"</span>) <span class="co"># or whatever error handling code you want</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "0.775086843813264 is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling."</code></pre>
 </div>
 </div>
 <p>It is important to note, that although it appears that we are imputing missing values in the code, the linear model fails to impute when there are missing values in the predicting variables. To avoid this error, below we will impute most of the missing data with mean or mode and attempt to impute flipper_length_mm with a linear model. This method will not be accurate due to the same underlying issue that we saw with imputing mean before.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>penguins_missing <span class="ot">&lt;-</span> <span class="fu">delete_MCAR</span>(penguins,<span class="fl">0.5</span>,<span class="fu">c</span>(<span class="st">"flipper_length_mm"</span>,<span class="st">"bill_length_mm"</span>,<span class="st">"bill_depth_mm"</span>,<span class="st">"body_mass_g"</span>,<span class="st">"species"</span>,<span class="st">"sex"</span>))</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>bill_length_mm_mean_value <span class="ot">&lt;-</span> <span class="fu">mean</span>(penguins<span class="sc">$</span>bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>bill_depth_mm_mean_value <span class="ot">&lt;-</span> <span class="fu">mean</span>(penguins<span class="sc">$</span>bill_depth_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>flipper_length_mm_mean_value <span class="ot">&lt;-</span> <span class="fu">mean</span>(penguins<span class="sc">$</span>flipper_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>body_mass_g_mean_value <span class="ot">&lt;-</span> <span class="fu">mean</span>(penguins<span class="sc">$</span>body_mass_g, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>species_mode_value <span class="ot">&lt;-</span> <span class="fu">mode</span>(penguins<span class="sc">$</span>species)</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>sex_mode_value <span class="ot">&lt;-</span> <span class="fu">mode</span>(penguins<span class="sc">$</span>sex)</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace NAs in the specific column with the mean</span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>penguins_Mean_imputated<span class="sc">$</span>bill_length_mm[<span class="fu">is.na</span>(penguins_Mean_imputated<span class="sc">$</span>bill_length_mm)] <span class="ot">&lt;-</span> bill_length_mm_mean_value</span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>penguins_Mean_imputated<span class="sc">$</span>bill_depth_mm[<span class="fu">is.na</span>(penguins_Mean_imputated<span class="sc">$</span>bill_depth_mm)] <span class="ot">&lt;-</span> bill_depth_mm_mean_value</span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>penguins_Mean_imputated<span class="sc">$</span>flipper_length_mm[<span class="fu">is.na</span>(penguins_Mean_imputated<span class="sc">$</span>flipper_length_mm)] <span class="ot">&lt;-</span> flipper_length_mm_mean_value</span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>penguins_Mean_imputated<span class="sc">$</span>body_mass_g[<span class="fu">is.na</span>(penguins_Mean_imputated<span class="sc">$</span>body_mass_g)] <span class="ot">&lt;-</span> body_mass_g_mean_value</span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>penguins_Mean_imputated<span class="sc">$</span>species[<span class="fu">is.na</span>(penguins_Mean_imputated<span class="sc">$</span>species)] <span class="ot">&lt;-</span> species_mode_value</span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>penguins_Mean_imputated<span class="sc">$</span>sex[<span class="fu">is.na</span>(penguins_Mean_imputated<span class="sc">$</span>sex)] <span class="ot">&lt;-</span> sex_mode_value</span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>penguins_Mean_imputated[<span class="sc">!</span><span class="fu">complete.cases</span>(penguins_Mean_imputated), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>penguins_missing <span class="ot">&lt;-</span> <span class="fu">delete_MCAR</span>(penguins,<span class="fl">0.5</span>,<span class="fu">c</span>(<span class="st">"flipper_length_mm"</span>,<span class="st">"bill_length_mm"</span>,<span class="st">"bill_depth_mm"</span>,<span class="st">"body_mass_g"</span>,<span class="st">"species"</span>,<span class="st">"sex"</span>))</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>bill_length_mm_mean_value <span class="ot">&lt;-</span> <span class="fu">mean</span>(penguins<span class="sc">$</span>bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>bill_depth_mm_mean_value <span class="ot">&lt;-</span> <span class="fu">mean</span>(penguins<span class="sc">$</span>bill_depth_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>flipper_length_mm_mean_value <span class="ot">&lt;-</span> <span class="fu">mean</span>(penguins<span class="sc">$</span>flipper_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>body_mass_g_mean_value <span class="ot">&lt;-</span> <span class="fu">mean</span>(penguins<span class="sc">$</span>body_mass_g, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>species_mode_value <span class="ot">&lt;-</span> <span class="fu">mode</span>(penguins<span class="sc">$</span>species)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>sex_mode_value <span class="ot">&lt;-</span> <span class="fu">mode</span>(penguins<span class="sc">$</span>sex)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace NAs in the specific column with the mean</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>penguins_Mean_imputated<span class="sc">$</span>bill_length_mm[<span class="fu">is.na</span>(penguins_Mean_imputated<span class="sc">$</span>bill_length_mm)] <span class="ot">&lt;-</span> bill_length_mm_mean_value</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>penguins_Mean_imputated<span class="sc">$</span>bill_depth_mm[<span class="fu">is.na</span>(penguins_Mean_imputated<span class="sc">$</span>bill_depth_mm)] <span class="ot">&lt;-</span> bill_depth_mm_mean_value</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>penguins_Mean_imputated<span class="sc">$</span>flipper_length_mm[<span class="fu">is.na</span>(penguins_Mean_imputated<span class="sc">$</span>flipper_length_mm)] <span class="ot">&lt;-</span> flipper_length_mm_mean_value</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>penguins_Mean_imputated<span class="sc">$</span>body_mass_g[<span class="fu">is.na</span>(penguins_Mean_imputated<span class="sc">$</span>body_mass_g)] <span class="ot">&lt;-</span> body_mass_g_mean_value</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>penguins_Mean_imputated<span class="sc">$</span>species[<span class="fu">is.na</span>(penguins_Mean_imputated<span class="sc">$</span>species)] <span class="ot">&lt;-</span> species_mode_value</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>penguins_Mean_imputated<span class="sc">$</span>sex[<span class="fu">is.na</span>(penguins_Mean_imputated<span class="sc">$</span>sex)] <span class="ot">&lt;-</span> sex_mode_value</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>penguins_Mean_imputated[<span class="sc">!</span><span class="fu">complete.cases</span>(penguins_Mean_imputated), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 0 × 8
 # ℹ 8 variables: species &lt;chr&gt;, island &lt;chr&gt;, bill_length_mm &lt;dbl&gt;,
 #   bill_depth_mm &lt;dbl&gt;, flipper_length_mm &lt;dbl&gt;, body_mass_g &lt;dbl&gt;, sex &lt;chr&gt;,
 #   year &lt;dbl&gt;</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>penguins_imputed <span class="ot">&lt;-</span> <span class="fu">impute_lm</span>(penguins_Mean_imputated, flipper_length_mm <span class="sc">~</span> species <span class="sc">+</span> bill_length_mm <span class="sc">+</span> bill_depth_mm)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>regg <span class="ot">=</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm, <span class="at">data =</span> penguins_imputed)</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co">#print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling."))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>penguins_imputed <span class="ot">&lt;-</span> <span class="fu">impute_lm</span>(penguins_Mean_imputated, flipper_length_mm <span class="sc">~</span> species <span class="sc">+</span> bill_length_mm <span class="sc">+</span> bill_depth_mm)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>regg <span class="ot">=</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm, <span class="at">data =</span> penguins_imputed)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co">#print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling."))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>0.4016 is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling.</p>
 

@@ -20,6 +20,25 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
 </style>
 
 
@@ -187,8 +206,8 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="tests-of-missing-data">3.2 Tests of Missing Data</h2>
 <p>MCAR assumes missing data values are distributed randomly through observations. To confirm this, divide the dataset into two sets, one with missing data and the other non-missing data. If MCAR exists, use pairwise or list-wise deletion. If not, use MICE algorithm. In MAR, missing data is distributed in sub-samples. Traditional methods and tests help identify missing data mechanisms.</p>
 <ul>
-<li><p>Little’s MCAR data test is extensively used to determine if data is MCAR. Little’s MCAR test is the most important for missing cases. The data is considered to be MCAR and missingness is ignored if its p-value is statistically insignificant. For observations with missing data values, we can use listwise deletion or the most advanced relabel imputation method, multiple imputation by chained equations, to increase the sample size and statistical power. [3]</p></li>
-<li><p>A likelihood-ratio test helps choose the best model from two. Diggle [3] proposes a test for MAR assumption, but for p-value distribution under the null hypothesis, it was suggested to use the Kolmogorov’s test, as 𝑝𝑗 acts like a uniform distribution.</p></li>
+<li><p>Little’s MCAR data test is extensively used to determine if data is MCAR. Little’s MCAR test is the most important for missing cases. The data is considered to be MCAR and missingness is ignored if its p-value is statistically insignificant. For observations with missing data values, we can use listwise deletion or the most advanced relabel imputation method, multiple imputation by chained equations, to increase the sample size and statistical power. <span class="citation" data-cites="alruhaymi2021">(<a href="#ref-alruhaymi2021" role="doc-biblioref">Alruhaymi and Kim 2021</a>)</span></p></li>
+<li><p>A likelihood-ratio test helps choose the best model from two. Diggle <span class="citation" data-cites="alruhaymi2021">(<a href="#ref-alruhaymi2021" role="doc-biblioref">Alruhaymi and Kim 2021</a>)</span> proposes a test for MAR assumption, but for p-value distribution under the null hypothesis, it was suggested to use the Kolmogorov’s test, as 𝑝𝑗 acts like a uniform distribution.</p></li>
 <li><p>The Chi-Square test compares two categorical variables for goodness of fit and independence. It uses contingency tables to calculate observed and expected values, and follows the same steps as hypothesis testing. The test involves stating null and alternative hypotheses, choosing the level of significance, finding critical values, and drawing a conclusion about the null hypothesis, rejecting it if the alternative hypothesis is true.</p></li>
 <li><p>The data are considered to be MCAR if the t-statistic is negligible, as determined by Dixon’s MCAR test, which compares the means of complete and incomplete cases. If, on the other hand, the t statistic is found to be significant, the data do not fit the MCAR model.</p></li>
 </ul>
@@ -199,7 +218,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="traditional-methods" class="level2">
 <h2 class="anchored" data-anchor-id="traditional-methods">3.3.1 Traditional Methods</h2>
-<p>Older solutions for missing data include deletion and single imputation [27]. A complete-case analysis, or list-wise elimination, removes all missing values. Pair-wise deletion removes only partial cases to compensate for list-wise deletion data loss (Table 3).</p>
+<p>Older solutions for missing data include deletion and single imputation <span class="citation" data-cites="ATM8839">(<a href="#ref-ATM8839" role="doc-biblioref">Zhang 2016</a>)</span>. A complete-case analysis, or list-wise elimination, removes all missing values. Pair-wise deletion removes only partial cases to compensate for list-wise deletion data loss (Table 3).</p>
 <p>This strategy helps with tiny missing data and may not skew analysis. Though it was once the most frequent way to address missing data in quantitative research, it will remove vital information. Imputing data with mean/median is another easy workaround for missing data, however it reduces data volatility and biases analysis.</p>
 <p><img src="imgs/methTable3.png" class="img-fluid"></p>
 <p>Table 3. Examples of list wise deletion and pair wise deletion</p>
@@ -207,7 +226,7 @@ ul.task-list li input[type="checkbox"] {
 <p>General, scale-item, and time-series methods are also traditional.</p>
 <p>See Table 4 for Enders’ summary of classic missingness procedures as a road map for handling missing data.</p>
 <p>All of the above strategies contain bias and fail to address missing data.</p>
-<p>Deleted records and single-valued imputation are two of the more traditional approaches to handling missing data [3]. In a complete-case analysis, also known as list-wise deletion, missing values are completely removed from the dataset and thrown away. As a countermeasure to the loss of data that results from list-wise deletion, pair-wise deletion eliminates only incomplete cases (Table 3). Older solutions for missing data include deletion and single imputation [27]. A complete-case analysis, or list-wise elimination, removes all missing values. Pair-wise deletion removes only partial cases to compensate for list-wise deletion data loss (Table 3).</p>
+<p>Deleted records and single-valued imputation are two of the more traditional approaches to handling missing data <span class="citation" data-cites="alruhaymi2021">(<a href="#ref-alruhaymi2021" role="doc-biblioref">Alruhaymi and Kim 2021</a>)</span>. In a complete-case analysis, also known as list-wise deletion, missing values are completely removed from the dataset and thrown away. As a countermeasure to the loss of data that results from list-wise deletion, pair-wise deletion eliminates only incomplete cases (Table 3). Older solutions for missing data include deletion and single imputation <span class="citation" data-cites="ATM8839">(<a href="#ref-ATM8839" role="doc-biblioref">Zhang 2016</a>)</span>. A complete-case analysis, or list-wise elimination, removes all missing values. Pair-wise deletion removes only partial cases to compensate for list-wise deletion data loss (Table 3).</p>
 <p>This strategy helps with tiny missing data and may not skew analysis. Though it was once the most frequent way to address missing data in quantitative research, it will remove vital information. Imputing data with mean/median is another easy workaround for missing data, however it reduces data volatility and biases analysis.</p>
 <p>A correlation matrix identifies a few missing variable predictors for linear regression imputation. In the regression equation, the best predictors are predictor variables and the variable with missing data is the dependent variable. This predicts missing values. Linear regression-based imputation adds random noise terms to a regression line to restore data variability. Stochastic regression improves this.</p>
 <p>See Table 4 for Enders’ summary of classic missingness procedures as a road map for handling missing data.</p>
@@ -217,19 +236,30 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="modern-imputation-techniques">3.3.2 Modern Imputation Techniques</h2>
 <p>Dealing with missing values is the most difficult process since the exact nature of the missing data is unknown, which makes the task more difficult. Multiple imputations and maximum likelihood are the “state of the art” methods that have dealt with the problem of managing missing data in a satisfactory manner. The concept of multiple imputations and how they operate will be the primary focus of this dissertation.</p>
 <ol type="1">
-<li><p>The method known as multiple imputations [3] is widely regarded as the most effective strategy for dealing with the issue of missing data. This is because it generates numerous copies of the dataset, each of which contains a unique set of imputed values.</p></li>
+<li><p>The method known as multiple imputations <span class="citation" data-cites="alruhaymi2021">(<a href="#ref-alruhaymi2021" role="doc-biblioref">Alruhaymi and Kim 2021</a>)</span> is widely regarded as the most effective strategy for dealing with the issue of missing data. This is because it generates numerous copies of the dataset, each of which contains a unique set of imputed values.</p></li>
 <li><p>Maximum-likelihood imputation, which is based on a variance-covariance matrix for the variables and uses all of the data points that are currently available to determine what values should be imputed for missing data.</p></li>
 </ol>
 <p>Multiple imputations produce results that are objective when applied to data from MCAR and MAR. When it comes to dealing with missing data, using methods of multiple imputation can provide a number of benefits for the researcher. When these approaches are used, the amount of bias that is found in the dataset after it has been evaluated is reduced, which is the most significant benefit of utilizing these methods. In addition to this, they enhance the precision of the data, which, in turn, contributes to the advancement of the validity of an experiment that is being carried out using the data as its primary resource. Again, there is an increase in the precision of the data when the data values within a dataset are brought closer together through the use of imputation methods. This brings us back to the original point. On the other hand, imputation processes help to a more accurate statistical analysis since they make a dataset less prone to being biased by outliers. This makes the analysis more accurate overall.</p>
-<p>The expectation-maximization algorithm and the Bayesian simulation approach are two further examples of methods [3].</p>
+<p>The expectation-maximization algorithm and the Bayesian simulation approach are two further examples of methods <span class="citation" data-cites="alruhaymi2021">(<a href="#ref-alruhaymi2021" role="doc-biblioref">Alruhaymi and Kim 2021</a>)</span> .</p>
 <p><img src="imgs/methTable4.png" class="img-fluid"></p>
-<p>Table 4. Summary of traditional ways of treating missing data [3].</p>
-<p>Multiple imputation works effectively with MCAR or MAR missing data. The sample size is maintained and selection is avoided by not dropping cases with incomplete data. It also lowers standard error bias. Imputed data analysis involves imputing missing values, theoretical analysis, and pooling estimations into a single set of results. First, impute missing values to generate enough data sets. Increasing the percentage of missing data requires more imputations. Each imputation creates new data. Step two is examining imputed data in the researcher’s theory-based model. This requires simultaneous processing of each imputed data set. Researcher must specify imputed data in most statistical applications. The final step is pooling findings. Pooling produces a single result that combines imputation uncertainty into standard errors.[4]</p>
+<p>Table 4. Summary of traditional ways of treating missing data <span class="citation" data-cites="alruhaymi2021">(<a href="#ref-alruhaymi2021" role="doc-biblioref">Alruhaymi and Kim 2021</a>)</span>.</p>
+<p>Multiple imputation works effectively with MCAR or MAR missing data. The sample size is maintained and selection is avoided by not dropping cases with incomplete data. It also lowers standard error bias. Imputed data analysis involves imputing missing values, theoretical analysis, and pooling estimations into a single set of results. First, impute missing values to generate enough data sets. Increasing the percentage of missing data requires more imputations. Each imputation creates new data. Step two is examining imputed data in the researcher’s theory-based model. This requires simultaneous processing of each imputed data set. Researcher must specify imputed data in most statistical applications. The final step is pooling findings. Pooling produces a single result that combines imputation uncertainty into standard errors. <span class="citation" data-cites="curley2017">(<a href="#ref-curley2017" role="doc-biblioref">Curley et al. 2017</a>)</span></p>
+
 
 
 </section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-alruhaymi2021" class="csl-entry" role="doc-biblioentry">
+Alruhaymi, Abdullah Z., and Charles J. Kim. 2021. <span>“Study on the Missing Data Mechanisms and Imputation Methods.”</span> <em>Open Journal of Statistics</em> 11 (04): 477–92. <a href="https://doi.org/10.4236/ojs.2021.114030">https://doi.org/10.4236/ojs.2021.114030</a>.
+</div>
+<div id="ref-curley2017" class="csl-entry" role="doc-biblioentry">
+Curley, Cali, Rachel M. Krause, Richard Feiock, and Christopher V. Hawkins. 2017. <span>“Dealing with Missing Data: A Comparative Exploration of Approaches Using the Integrated City Sustainability Database.”</span> <em>Urban Affairs Review</em> 55 (2): 591–615. <a href="https://doi.org/10.1177/1078087417726394">https://doi.org/10.1177/1078087417726394</a>.
+</div>
+<div id="ref-ATM8839" class="csl-entry" role="doc-biblioentry">
+Zhang, Zhongheng. 2016. <span>“Missing Data Imputation: Focusing on Single Imputation.”</span> <em>Annals of Translational Medicine</em> 4 (1). <a href="https://atm.amegroups.org/article/view/8839">https://atm.amegroups.org/article/view/8839</a>.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
