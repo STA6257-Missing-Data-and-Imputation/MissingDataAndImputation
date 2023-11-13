@@ -444,14 +444,14 @@ R^2 0.7404551 0.6794023 0.7915921 0.3094308</code></pre>
 <h2 class="anchored" data-anchor-id="other-considerations">4.5 Other Considerations</h2>
 <p>As shown in the R-Squared output for each model. We can see a small improvement in the accuracy of this model by performing imputation. This accuracy was possible since there wasnt an issue with missing values in species, bill_length_mm, and bill_depth_mm which were used to impute flipper_length_mm. But what happens if these variables contained large amounts of missing values that must be replaced as well?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>penguins_missing <span class="ot">&lt;-</span> <span class="fu">delete_MCAR</span>(penguins,<span class="fl">0.5</span>,<span class="fu">c</span>(<span class="st">"flipper_length_mm"</span>,<span class="st">"bill_length_mm"</span>,<span class="st">"bill_depth_mm"</span>,<span class="st">"body_mass_g"</span>,<span class="st">"species"</span>,<span class="st">"sex"</span>))</span>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>penguins_missing_all <span class="ot">&lt;-</span> <span class="fu">delete_MCAR</span>(penguins,<span class="fl">0.5</span>,<span class="fu">c</span>(<span class="st">"flipper_length_mm"</span>,<span class="st">"bill_length_mm"</span>,<span class="st">"bill_depth_mm"</span>,<span class="st">"body_mass_g"</span>,<span class="st">"species"</span>,<span class="st">"sex"</span>))</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tryCatch</span>(</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  {</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  penguins_imputed_missing <span class="ot">&lt;-</span> <span class="fu">impute_lm</span>(penguins_missing, flipper_length_mm <span class="sc">~</span> species <span class="sc">+</span> bill_length_mm <span class="sc">+</span> bill_depth_mm)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  penguins_imputed_missing <span class="ot">&lt;-</span> <span class="fu">impute_lm</span>(penguins_missing_all, flipper_length_mm <span class="sc">~</span> species <span class="sc">+</span> bill_length_mm <span class="sc">+</span> bill_depth_mm)</span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  penguins_imputed_missing[<span class="sc">!</span><span class="fu">complete.cases</span>(penguins_imputed_missing), ]</span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  regg <span class="ot">=</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm, <span class="at">data =</span> penguins_imputed_missing)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  regg <span class="ot">=</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm, <span class="at">data =</span> penguins_missing_all, <span class="at">na.action =</span> <span class="fu">na.fail</span>())</span>
 <span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">paste</span>(<span class="fu">summary</span>(regg)<span class="sc">$</span>adj.r.squared, <span class="st">"is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling."</span>))</span>
 <span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  },</span>
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">error =</span> <span class="cf">function</span>(e) </span>
@@ -460,7 +460,7 @@ R^2 0.7404551 0.6794023 0.7915921 0.3094308</code></pre>
 <span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "0.775086843813264 is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling."</code></pre>
+<pre><code>[1] "This caused an error!"</code></pre>
 </div>
 </div>
 <p>It is important to note, that although it appears that we are imputing missing values in the code, the linear model fails to impute when there are missing values in the predicting variables. To avoid this error, below we will impute most of the missing data with mean or mode and attempt to impute flipper_length_mm with a linear model. This method will not be accurate due to the same underlying issue that we saw with imputing mean before.</p>

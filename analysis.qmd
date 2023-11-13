@@ -133,14 +133,14 @@ Since multiple imputation creates multiple linear regressions based on multiple 
 As shown in the R-Squared output for each model. We can see a small improvement in the accuracy of this model by performing imputation. This accuracy was possible since there wasnt an issue with missing values in species, bill_length_mm, and bill_depth_mm which were used to impute flipper_length_mm. But what happens if these variables contained large amounts of missing values that must be replaced as well?
 
 ```{r}
-penguins_missing <- delete_MCAR(penguins,0.5,c("flipper_length_mm","bill_length_mm","bill_depth_mm","body_mass_g","species","sex"))
+penguins_missing_all <- delete_MCAR(penguins,0.5,c("flipper_length_mm","bill_length_mm","bill_depth_mm","body_mass_g","species","sex"))
 tryCatch(
   {
-  penguins_imputed_missing <- impute_lm(penguins_missing, flipper_length_mm ~ species + bill_length_mm + bill_depth_mm)
+  penguins_imputed_missing <- impute_lm(penguins_missing_all, flipper_length_mm ~ species + bill_length_mm + bill_depth_mm)
 
   penguins_imputed_missing[!complete.cases(penguins_imputed_missing), ]
 
-  regg = lm(body_mass_g~ flipper_length_mm, data = penguins_imputed_missing)
+  regg = lm(body_mass_g~ flipper_length_mm, data = penguins_missing_all, na.action = na.fail())
   print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling."))
   },
   error = function(e) 
