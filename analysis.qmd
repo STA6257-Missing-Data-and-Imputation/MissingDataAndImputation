@@ -93,7 +93,7 @@ penguins_Median_imputated$flipper_length_mm[is.na(penguins_Median_imputated$flip
 penguins_Median_imputated[!complete.cases(penguins), ]
 
 regg = lm(body_mass_g~ flipper_length_mm, data = penguins_Median_imputated, na.action=na.omit)
-print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where missing values are imputed as the median."))
+#print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where missing values are imputed as the median."))
 
 ```
 
