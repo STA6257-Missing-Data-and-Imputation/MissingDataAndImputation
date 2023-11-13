@@ -8,19 +8,19 @@ Techniques for addressing missing data can be simplified into conventional appro
 
 ## 3.1 Detection of the Type of Missingness
 
-Statistical methods for missing data assume data is MCAR. Data missingness assumptions must be checked before imputation. Methods such as Multiple Imputation by Chained Equations (MICE) are extremely dependent on the presumption that missing values are either MCAR or MAR. Verifying requires data inspection and testing.   Little's test for MCAR detection and the likelihood-ratio test for MAR were created by statisticians to help find missingness.
+Statistical methods for missing data assume data is MCAR. Data missingness assumptions must be checked before imputation. Methods such as Multiple Imputation by Chained Equations (MICE) are extremely dependent on the presumption that missing values are either MCAR or MAR. Verifying requires data inspection and testing. Little's test for MCAR detection and the likelihood-ratio test for MAR were created by statisticians to help find missingness.
 
 ## 3.2 Tests of Missing Data
 
 MCAR assumes missing data values are distributed randomly through observations. To confirm this, divide the dataset into two sets, one with missing data and the other non-missing data. If MCAR exists, use pairwise or list-wise deletion. If not, use MICE algorithm. In MAR, missing data is distributed in sub-samples. Traditional methods and tests help identify missing data mechanisms.
 
-- Little's MCAR data test is extensively used to determine if data is MCAR. Little's MCAR test is the most important for missing cases. The data is considered to be MCAR and missingness is ignored if its p-value is statistically insignificant. For observations with missing data values, we can use listwise deletion or the most advanced relabel imputation method, multiple imputation by chained equations, to increase the sample size and statistical power. [3]
+-   Little's MCAR data test is extensively used to determine if data is MCAR. Little's MCAR test is the most important for missing cases. The data is considered to be MCAR and missingness is ignored if its p-value is statistically insignificant. For observations with missing data values, we can use listwise deletion or the most advanced relabel imputation method, multiple imputation by chained equations, to increase the sample size and statistical power. \[3\]
 
-- A likelihood-ratio test helps choose the best model from two. Diggle [3] proposes a test for MAR assumption, but for p-value distribution under the null hypothesis, it was suggested to use the Kolmogorov's test, as 𝑝𝑗 acts like a uniform distribution.
+-   A likelihood-ratio test helps choose the best model from two. Diggle \[3\] proposes a test for MAR assumption, but for p-value distribution under the null hypothesis, it was suggested to use the Kolmogorov's test, as 𝑝𝑗 acts like a uniform distribution.
 
-- The Chi-Square test compares two categorical variables for goodness of fit and independence. It uses contingency tables to calculate observed and expected values, and follows the same steps as hypothesis testing. The test involves stating null and alternative hypotheses, choosing the level of significance, finding critical values, and drawing a conclusion about the null hypothesis, rejecting it if the alternative hypothesis is true.
+-   The Chi-Square test compares two categorical variables for goodness of fit and independence. It uses contingency tables to calculate observed and expected values, and follows the same steps as hypothesis testing. The test involves stating null and alternative hypotheses, choosing the level of significance, finding critical values, and drawing a conclusion about the null hypothesis, rejecting it if the alternative hypothesis is true.
 
-- The data are considered to be MCAR if the t-statistic is negligible, as determined by Dixon's MCAR test, which compares the means of complete and incomplete cases. If, on the other hand, the t statistic is found to be significant, the data do not fit the MCAR model.
+-   The data are considered to be MCAR if the t-statistic is negligible, as determined by Dixon's MCAR test, which compares the means of complete and incomplete cases. If, on the other hand, the t statistic is found to be significant, the data do not fit the MCAR model.
 
 ## 3.3 Missing Data Imputation
 
@@ -28,7 +28,7 @@ There are two main types of missing data techniques: simple traditional techniqu
 
 ## 3.3.1 Traditional Methods
 
-Older solutions for missing data include deletion and single imputation [27]. A complete-case analysis, or list-wise elimination, removes all missing values. Pair-wise deletion removes only partial cases to compensate for list-wise deletion data loss (Table 3).
+Older solutions for missing data include deletion and single imputation \[27\]. A complete-case analysis, or list-wise elimination, removes all missing values. Pair-wise deletion removes only partial cases to compensate for list-wise deletion data loss (Table 3).
 
 This strategy helps with tiny missing data and may not skew analysis. Though it was once the most frequent way to address missing data in quantitative research, it will remove vital information. Imputing data with mean/median is another easy workaround for missing data, however it reduces data volatility and biases analysis.
 
@@ -44,8 +44,7 @@ See Table 4 for Enders' summary of classic missingness procedures as a road map 
 
 All of the above strategies contain bias and fail to address missing data.
 
-Deleted records and single-valued imputation are two of the more traditional approaches to handling missing data [3]. In a complete-case analysis, also known as list-wise deletion, missing values are completely removed from the dataset and thrown away. As a countermeasure to the loss of data that results from list-wise deletion, pair-wise deletion eliminates only incomplete cases (Table 3).
-Older solutions for missing data include deletion and single imputation [27]. A complete-case analysis, or list-wise elimination, removes all missing values. Pair-wise deletion removes only partial cases to compensate for list-wise deletion data loss (Table 3).
+Deleted records and single-valued imputation are two of the more traditional approaches to handling missing data \[3\]. In a complete-case analysis, also known as list-wise deletion, missing values are completely removed from the dataset and thrown away. As a countermeasure to the loss of data that results from list-wise deletion, pair-wise deletion eliminates only incomplete cases (Table 3). Older solutions for missing data include deletion and single imputation \[27\]. A complete-case analysis, or list-wise elimination, removes all missing values. Pair-wise deletion removes only partial cases to compensate for list-wise deletion data loss (Table 3).
 
 This strategy helps with tiny missing data and may not skew analysis. Though it was once the most frequent way to address missing data in quantitative research, it will remove vital information. Imputing data with mean/median is another easy workaround for missing data, however it reduces data volatility and biases analysis.
 
@@ -59,16 +58,16 @@ All of the above strategies contain bias and fail to address missing data.
 
 Dealing with missing values is the most difficult process since the exact nature of the missing data is unknown, which makes the task more difficult. Multiple imputations and maximum likelihood are the "state of the art" methods that have dealt with the problem of managing missing data in a satisfactory manner. The concept of multiple imputations and how they operate will be the primary focus of this dissertation.
 
-1)  The method known as multiple imputations [3] is widely regarded as the most effective strategy for dealing with the issue of missing data. This is because it generates numerous copies of the dataset, each of which contains a unique set of imputed values.
+1)  The method known as multiple imputations \[3\] is widely regarded as the most effective strategy for dealing with the issue of missing data. This is because it generates numerous copies of the dataset, each of which contains a unique set of imputed values.
 
 2)  Maximum-likelihood imputation, which is based on a variance-covariance matrix for the variables and uses all of the data points that are currently available to determine what values should be imputed for missing data.
 
 Multiple imputations produce results that are objective when applied to data from MCAR and MAR. When it comes to dealing with missing data, using methods of multiple imputation can provide a number of benefits for the researcher. When these approaches are used, the amount of bias that is found in the dataset after it has been evaluated is reduced, which is the most significant benefit of utilizing these methods. In addition to this, they enhance the precision of the data, which, in turn, contributes to the advancement of the validity of an experiment that is being carried out using the data as its primary resource. Again, there is an increase in the precision of the data when the data values within a dataset are brought closer together through the use of imputation methods. This brings us back to the original point. On the other hand, imputation processes help to a more accurate statistical analysis since they make a dataset less prone to being biased by outliers. This makes the analysis more accurate overall.
 
-The expectation-maximization algorithm and the Bayesian simulation approach are two further examples of methods [3].
+The expectation-maximization algorithm and the Bayesian simulation approach are two further examples of methods \[3\].
 
 ![](imgs/methTable4.png)
 
-Table 4. Summary of traditional ways of treating missing data [3].
+Table 4. Summary of traditional ways of treating missing data \[3\].
 
-Multiple imputation works effectively with MCAR or MAR missing data. The sample size is maintained and selection is avoided by not dropping cases with incomplete data. It also lowers standard error bias. Imputed data analysis involves imputing missing values, theoretical analysis, and pooling estimations into a single set of results. First, impute missing values to generate enough data sets. Increasing the percentage of missing data requires more imputations. Each imputation creates new data. Step two is examining imputed data in the researcher's theory-based model. This requires simultaneous processing of each imputed data set. Researcher must specify imputed data in most statistical applications. The final step is pooling findings. Pooling produces a single result that combines imputation uncertainty into standard errors.[4]
+Multiple imputation works effectively with MCAR or MAR missing data. The sample size is maintained and selection is avoided by not dropping cases with incomplete data. It also lowers standard error bias. Imputed data analysis involves imputing missing values, theoretical analysis, and pooling estimations into a single set of results. First, impute missing values to generate enough data sets. Increasing the percentage of missing data requires more imputations. Each imputation creates new data. Step two is examining imputed data in the researcher's theory-based model. This requires simultaneous processing of each imputed data set. Researcher must specify imputed data in most statistical applications. The final step is pooling findings. Pooling produces a single result that combines imputation uncertainty into standard errors.\[4\]
