@@ -26,6 +26,10 @@ website:
               text: Analysis
             - href: conclusion.qmd
               text: Conclusion
+        - section: "Presentation"
+          contents:
+            - href: slides/slidedeck.qmd
+              text: Slide Deck
         - section: "About"
           contents:
           - href: about.qmd

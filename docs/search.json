@@ -138,5 +138,110 @@
     "title": "4. Analysis",
     "section": "4.2 Creating Missingness",
     "text": "4.2 Creating Missingness\nTo demonstrate the benefits of imputation, we will create missingness in a predictor variable and create a model by excluding the missing data. Then we will perform imputation on the dataset and recreate the model to see if there is a difference in performance. Before we perform imputations on the penguins (Horst, Hill, and Gorman 2020) dataset, first the data must be cleaned to omit all incomplete records so we can have the actual values to compare our imputations against. The code block below demonstrates the penguins dataset that we will be using, cleaning the incomplete records, and displays the correlation using the ggplot2 (Wickham 2016) package between body_mass_g and flipper_legth_mm that we will be using to construct a model before and after imputation of missing data.\n\npenguin_rows_with_na <- penguins[!complete.cases(penguins), ]\nprint(penguin_rows_with_na)\n\n# A tibble: 11 × 8\n   species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g\n   <chr>   <chr>              <dbl>         <dbl>             <dbl>       <dbl>\n 1 Adelie  Torgersen           NA            NA                  NA          NA\n 2 Adelie  Torgersen           34.1          18.1               193        3475\n 3 Adelie  Torgersen           42            20.2               190        4250\n 4 Adelie  Torgersen           37.8          17.1               186        3300\n 5 Adelie  Torgersen           37.8          17.3               180        3700\n 6 Adelie  Dream               37.5          18.9               179        2975\n 7 Gentoo  Biscoe              44.5          14.3               216        4100\n 8 Gentoo  Biscoe              46.2          14.4               214        4650\n 9 Gentoo  Biscoe              47.3          13.8               216        4725\n10 Gentoo  Biscoe              44.5          15.7               217        4875\n11 Gentoo  Biscoe              NA            NA                  NA          NA\n# ℹ 2 more variables: sex <chr>, year <dbl>\n\npenguins_filtered <- na.omit(penguins)\n\n\nggplot(penguins_filtered, aes(body_mass_g, flipper_length_mm)) + \n  geom_count() + \n  geom_smooth(method='lm')\n\n`geom_smooth()` using formula = 'y ~ x'\n\n\n\n\n\nIn the code block below, we will create 50% missing at random data in the column flipper_length_mm using the missMethods (Rockel 2022) package. Then we will create a linear regression to display the r-squared that would be achieved by deleting the missing data from the data set.\n\npenguins_missing <- delete_MCAR(penguins,0.5,\"flipper_length_mm\")\n\nregg = lm(body_mass_g~ flipper_length_mm, data = penguins_missing, na.action=na.omit) \n#print(paste(summary(regg)$adj.r.squared, \"is the R-Squared for the linear model where missing values are excluded from the dataset.\"))\n\n0.7569 is the R-Squared for the linear model where missing values are excluded from the dataset. Although this R-Squared is good, it omits half of the data since 50% of the values for flipper_length_mm are missing. In the following code blocks, we will explore imputation of the the missing data."
+  },
+  {
+    "objectID": "slides/slide1.html",
+    "href": "slides/slide1.html",
+    "title": "Habits",
+    "section": "",
+    "text": "Turn off alarm\nGet out of bed"
+  },
+  {
+    "objectID": "slides/slide1.html#going-to-sleep",
+    "href": "slides/slide1.html#going-to-sleep",
+    "title": "Habits",
+    "section": "Going to sleep",
+    "text": "Going to sleep\n\nGet in bed\nCount sheep"
+  },
+  {
+    "objectID": "slides/slide1.html#getting-up",
+    "href": "slides/slide1.html#getting-up",
+    "title": "Habits",
+    "section": "Getting up",
+    "text": "Getting up\n\nTurn off alarm\nGet out of bed"
+  },
+  {
+    "objectID": "slides/slide1.html#breakfast",
+    "href": "slides/slide1.html#breakfast",
+    "title": "Habits",
+    "section": "Breakfast",
+    "text": "Breakfast\n\nEat eggs\nDrink coffee"
+  },
+  {
+    "objectID": "slides/slide1.html#dinner",
+    "href": "slides/slide1.html#dinner",
+    "title": "Habits",
+    "section": "Dinner",
+    "text": "Dinner\n\nEat spaghetti\nDrink wine"
+  },
+  {
+    "objectID": "slides/slidedeck.html#getting-up",
+    "href": "slides/slidedeck.html#getting-up",
+    "title": "Missing Data and Imputation",
+    "section": "Getting up",
+    "text": "Getting up\n\nTurn off alarm\nGet out of bed"
+  },
+  {
+    "objectID": "slides/slidedeck.html#breakfast",
+    "href": "slides/slidedeck.html#breakfast",
+    "title": "Missing Data and Imputation",
+    "section": "Breakfast",
+    "text": "Breakfast\n\nEat eggs\nDrink coffee"
+  },
+  {
+    "objectID": "slides/slidedeck.html#dinner",
+    "href": "slides/slidedeck.html#dinner",
+    "title": "Missing Data and Imputation",
+    "section": "Dinner",
+    "text": "Dinner\n\nEat spaghetti\nDrink wine"
+  },
+  {
+    "objectID": "slides/slidedeck.html#going-to-sleep",
+    "href": "slides/slidedeck.html#going-to-sleep",
+    "title": "Missing Data and Imputation",
+    "section": "Going to sleep",
+    "text": "Going to sleep\n\nGet in bed\nCount sheep"
+  },
+  {
+    "objectID": "slides/slidedeck.html#what-is-missing-data-and-imputation",
+    "href": "slides/slidedeck.html#what-is-missing-data-and-imputation",
+    "title": "Missing Data and Imputation",
+    "section": "What is Missing Data and Imputation?",
+    "text": "What is Missing Data and Imputation?\n\nCritical issue that can lead to global crises and cybersecurity threats\nMAR, MCAR, and MNAR"
+  },
+  {
+    "objectID": "slides/slidedeck.html#imputation",
+    "href": "slides/slidedeck.html#imputation",
+    "title": "Missing Data and Imputation",
+    "section": "Imputation",
+    "text": "Imputation\n\nSimple Imputation\nMultivariate Imputation by Chained Equation"
+  },
+  {
+    "objectID": "slides/slidedeck.html#palmerpenguin",
+    "href": "slides/slidedeck.html#palmerpenguin",
+    "title": "Missing Data and Imputation",
+    "section": "palmerpenguin",
+    "text": "palmerpenguin\n\nThe penguins’ dataset is comprised of 8 columns and 344 rows based on data collected on three different species of penguins in Palmer Archipelago, Antarctica"
+  },
+  {
+    "objectID": "slides/slidedeck.html#variables",
+    "href": "slides/slidedeck.html#variables",
+    "title": "Missing Data and Imputation",
+    "section": "Variables",
+    "text": "Variables\n\nSpecies\nIsland\nBill_length_mm\nBill_depth_mm\nFlipper_length_mm\nBody_mass_g\nSex\nYear"
+  },
+  {
+    "objectID": "slides/slidedeck.html#summary",
+    "href": "slides/slidedeck.html#summary",
+    "title": "Missing Data and Imputation",
+    "section": "Summary",
+    "text": "Summary\n\n\nDescriptive Statistics  \npenguins  \nN: 344  \n\n                    bill_depth_mm   bill_length_mm   body_mass_g   flipper_length_mm      year\n----------------- --------------- ---------------- ------------- ------------------- ---------\n             Mean           17.15            43.92       4201.75              200.92   2008.03\n          Std.Dev            1.97             5.46        801.95               14.06      0.82\n              Min           13.10            32.10       2700.00              172.00   2007.00\n               Q1           15.60            39.20       3550.00              190.00   2007.00\n           Median           17.30            44.45       4050.00              197.00   2008.00\n               Q3           18.70            48.50       4750.00              213.00   2009.00\n              Max           21.50            59.60       6300.00              231.00   2009.00\n              MAD            2.22             7.04        889.56               16.31      1.48\n              IQR            3.10             9.27       1200.00               23.00      2.00\n               CV            0.12             0.12          0.19                0.07      0.00\n         Skewness           -0.14             0.05          0.47                0.34     -0.05\n      SE.Skewness            0.13             0.13          0.13                0.13      0.13\n         Kurtosis           -0.92            -0.89         -0.74               -1.00     -1.51\n          N.Valid          342.00           342.00        342.00              342.00    344.00\n        Pct.Valid           99.42            99.42         99.42               99.42    100.00"
+  },
+  {
+    "objectID": "slides/slidedeck.html#image",
+    "href": "slides/slidedeck.html#image",
+    "title": "Missing Data and Imputation",
+    "section": "Image",
+    "text": "Image"
   }
 ]

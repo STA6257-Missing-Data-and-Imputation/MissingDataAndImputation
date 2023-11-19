@@ -1,0 +1,53 @@
+---
+title: "Missing Data and Imputation"
+author: "Yoseling Gomez - Clayton Carpenter - Stesh Davis-Lewis"
+format: revealjs
+---
+
+# Introduction
+
+## What is Missing Data and Imputation?
+
+-   Critical issue that can lead to global crises and cybersecurity threats
+-   MAR, MCAR, and MNAR
+
+## Imputation
+
+-   Simple Imputation
+-   Multivariate Imputation by Chained Equation
+
+# Data
+
+## palmerpenguin
+
+-   The penguins' dataset is comprised of 8 columns and 344 rows based on data collected on three different species of penguins in Palmer Archipelago, Antarctica
+
+## Variables
+
+-   Species
+-   Island
+-   Bill_length_mm
+-   Bill_depth_mm
+-   Flipper_length_mm
+-   Body_mass_g
+-   Sex
+-   Year
+
+## Image
+
+![](/imgs/culmen_depth.png)
+
+## Summary
+
+```{r}
+library(palmerpenguins)
+data(package = 'palmerpenguins')
+library(summarytools)
+descr(penguins)
+```
+
+# Methodology
+
+# Analysis
+
+# Conclusion
