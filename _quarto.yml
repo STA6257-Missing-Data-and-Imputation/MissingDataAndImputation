@@ -29,7 +29,9 @@ website:
         - section: "Presentation"
           contents:
             - href: slides/slidedeck.qmd
+              target: _blank
               text: Slide Deck
+              
         - section: "About"
           contents:
           - href: about.qmd
