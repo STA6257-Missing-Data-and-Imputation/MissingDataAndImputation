@@ -9,6 +9,7 @@ website:
         href: index.qmd
       - icon: github
         href: https://github.com/STA6257-Missing-Data-and-Imputation/MissingDataAndImputation
+        
 
     style: "docked"
     search: true
@@ -36,8 +37,6 @@ website:
           contents:
           - href: about.qmd
             text: Team
-
-      
 
 format:
   html:

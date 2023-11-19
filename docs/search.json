@@ -207,14 +207,14 @@
     "href": "slides/slidedeck.html#what-is-missing-data-and-imputation",
     "title": "Missing Data and Imputation",
     "section": "What is Missing Data and Imputation?",
-    "text": "What is Missing Data and Imputation?\n\nCritical issue that can lead to global crises and cybersecurity threats\nMAR, MCAR, and MNAR"
+    "text": "What is Missing Data and Imputation?\n\nImperfect datasets with missing values can impact the legitimacy and reliability of the results obtained.\nTypes of missing data: MAR, MCAR, and MNAR"
   },
   {
     "objectID": "slides/slidedeck.html#imputation",
     "href": "slides/slidedeck.html#imputation",
     "title": "Missing Data and Imputation",
     "section": "Imputation",
-    "text": "Imputation\n\nSimple Imputation\nMultivariate Imputation by Chained Equation"
+    "text": "Imputation\n\nSimple Imputation: Replacing the missing value with one other value.\nMultiple Imputation: Creating multiple datasets with multiple imputed values.\nMultivariate Imputation by Chained Equation: Method that anticipates missing data by using existing data for other variables."
   },
   {
     "objectID": "slides/slidedeck.html#palmerpenguin",
@@ -243,5 +243,12 @@
     "title": "Missing Data and Imputation",
     "section": "Image",
     "text": "Image"
+  },
+  {
+    "objectID": "slides/slidedeck.html#what-is-missing-data-and-what-are-the-impacts",
+    "href": "slides/slidedeck.html#what-is-missing-data-and-what-are-the-impacts",
+    "title": "Missing Data and Imputation",
+    "section": "What is Missing Data and what are the impacts?",
+    "text": "What is Missing Data and what are the impacts?\n\nMissing data are null values in a dataset caused by issues such as non-responses or faulty measurement sensors\nTypes of missing data: MAR, MCAR, and MNAR\nImperfect datasets with missing values can impact the legitimacy and reliability of the results obtained."
   }
 ]

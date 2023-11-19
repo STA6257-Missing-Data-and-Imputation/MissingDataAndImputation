@@ -6,15 +6,17 @@ format: revealjs
 
 # Introduction
 
-## What is Missing Data and Imputation?
+## What is Missing Data and what are the impacts?
 
--   Critical issue that can lead to global crises and cybersecurity threats
--   MAR, MCAR, and MNAR
+- Missing data are null values in a dataset caused by issues such as non-responses or faulty measurement sensors
+-   Types of missing data: MAR, MCAR, and MNAR
+-   Imperfect datasets with missing values can impact the legitimacy and reliability of the results obtained.
 
 ## Imputation
 
--   Simple Imputation
--   Multivariate Imputation by Chained Equation
+-   Simple Imputation: Replacing the missing value with one imputed value.
+-   Multiple Imputation: Creating multiple datasets with multiple imputed values.
+-   Multivariate Imputation by Chained Equation: Method that anticipates missing data by using existing data for other variables.
 
 # Data
 
