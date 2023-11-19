@@ -214,7 +214,7 @@
     "href": "slides/slidedeck.html#imputation",
     "title": "Missing Data and Imputation",
     "section": "Imputation",
-    "text": "Imputation\n\nSimple Imputation: Replacing the missing value with one other value.\nMultiple Imputation: Creating multiple datasets with multiple imputed values.\nMultivariate Imputation by Chained Equation: Method that anticipates missing data by using existing data for other variables."
+    "text": "Imputation\n\nSimple Imputation: Replacing the missing value with one imputed value.\nMultiple Imputation: Creating multiple datasets with multiple imputed values.\nMultivariate Imputation by Chained Equation: Method that anticipates missing data by using existing data for other variables."
   },
   {
     "objectID": "slides/slidedeck.html#palmerpenguin",
@@ -250,5 +250,12 @@
     "title": "Missing Data and Imputation",
     "section": "What is Missing Data and what are the impacts?",
     "text": "What is Missing Data and what are the impacts?\n\nMissing data are null values in a dataset caused by issues such as non-responses or faulty measurement sensors\nTypes of missing data: MAR, MCAR, and MNAR\nImperfect datasets with missing values can impact the legitimacy and reliability of the results obtained."
+  },
+  {
+    "objectID": "slides/slidedeck.html#summary-1",
+    "href": "slides/slidedeck.html#summary-1",
+    "title": "Missing Data and Imputation",
+    "section": "Summary",
+    "text": "Summary\n“Most, if not all, datasets will have missing values and require values to be imputed. We used a reasonably clean palmerpenguin dataset to demonstrate the difference between actual and imputed values. Not all imputation methods yielded the same results, nor were they a perfect match to the original values.\nThe best methodology will be based on several factors, such as what type of data is missing, portion of missing values, software packages, etc. We advise everyone to research the best methodology for their dataset; every method has benefits and drawbacks.”"
   }
 ]

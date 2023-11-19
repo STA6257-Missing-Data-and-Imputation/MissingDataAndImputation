@@ -54,6 +54,7 @@ descr(penguins)
 
 # Conclusion
 
+## Summary
 "Most, if not all, datasets will have missing values and require values to be imputed. We used a reasonably clean palmerpenguin dataset to demonstrate the difference between actual and imputed values. Not all imputation methods yielded the same results, nor were they a perfect match to the original values. 
 
 The best methodology will be based on several factors, such as what type of data is missing, portion of missing values, software packages, etc. We advise everyone to research the best methodology for their dataset; every method has benefits and drawbacks."
