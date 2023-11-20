@@ -51,7 +51,7 @@ bibliography: references.bib
 - The assumption that missing values are either MCAR or MAR is crucial to the success of methods like Multiple Imputation by Chained Equations (MICE).
 - Little's test for MCAR detection and the likelihood-ratio test for MAR were established by statisticians to help uncover missingness.
 
-##Missing Data Imputation
+## Missing Data Imputation
 
 - There are two main types of missing data techniques: simple traditional techniques and modern techniques. 
 - Traditional Methods: 
