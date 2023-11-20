@@ -292,5 +292,19 @@
     "title": "Missing Data and Imputation",
     "section": "Multiple Imputation",
     "text": "Multiple Imputation\n\nlibrary(mice)\npenguins_missing.imp <- mice(penguins_missing, m=5)\nfit <- with(penguins_missing.imp, lm(body_mass_g~ flipper_length_mm))\nprint(pool.r.squared(fit))\n\n\nSince multiple imputation creates multiple linear regressions based on multiple imputations, the estimated r-value is 0.7317 with a 95% confidence interval between 0.6664 and 0.7861."
+  },
+  {
+    "objectID": "slides/slidedeck.html#detection-of-the-type-of-missingness",
+    "href": "slides/slidedeck.html#detection-of-the-type-of-missingness",
+    "title": "Missing Data and Imputation",
+    "section": "Detection of the Type of Missingness",
+    "text": "Detection of the Type of Missingness\n\nThe assumption that missing values are either MCAR or MAR is crucial to the success of methods like Multiple Imputation by Chained Equations (MICE).\nLittle’s test for MCAR detection and the likelihood-ratio test for MAR were established by statisticians to help uncover missingness."
+  },
+  {
+    "objectID": "slides/slidedeck.html#missing-data-imputation",
+    "href": "slides/slidedeck.html#missing-data-imputation",
+    "title": "Missing Data and Imputation",
+    "section": "Missing Data Imputation",
+    "text": "Missing Data Imputation\n\nThere are two main types of missing data techniques: simple traditional techniques and modern techniques.\nTraditional Methods:\nDeleted records and single-valued imputation are two of the more traditional approaches to handling missing data\nList-wise deletion, missing values are completely removed from the dataset and thrown away.\nPair-wise deletion removes only partial cases to compensate for list-wise deletion data loss\nModern Imputation Techniques:\nMultiple imputations generates numerous copies of the dataset, each of which contains a unique set of imputed values.\nMaximum-likelihood imputation uses all of the data points to determine what values should be imputed for missing data."
   }
 ]
