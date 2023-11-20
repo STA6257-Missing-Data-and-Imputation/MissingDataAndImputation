@@ -89,7 +89,6 @@ penguins_Mean_imputated <- penguins_missing
 # If we only replaced the missing values for flipper_length_mm
 flipper_length_mm_mean_value <- mean(penguins$flipper_length_mm, na.rm = TRUE)
 penguins_Mean_imputated$flipper_length_mm[is.na(penguins_Mean_imputated$flipper_length_mm)] <- flipper_length_mm_mean_value
-penguins_Mean_imputated[!complete.cases(penguins), ]
 
 regg = lm(body_mass_g~ flipper_length_mm, data = penguins_Mean_imputated, na.action=na.omit)
 ```
@@ -98,14 +97,25 @@ regg = lm(body_mass_g~ flipper_length_mm, data = penguins_Mean_imputated, na.act
 ## Single Imputation Continued
 
 ```{r}
+#| echo: true
 #| warning: false
 penguins_imputed <- impute_lm(penguins_missing, flipper_length_mm ~ species + bill_length_mm + bill_depth_mm)
 
 regg = lm(body_mass_g~ flipper_length_mm, data = penguins_imputed)
-#print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling."))
-
 ```
 -   0.7732 is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling.
+
+## Multiple Imputation
+```{r}
+#| warning: false
+#| echo: true
+#| output: false
+library(mice)
+penguins_missing.imp <- mice(penguins_missing, m=5)
+fit <- with(penguins_missing.imp, lm(body_mass_g~ flipper_length_mm))
+print(pool.r.squared(fit))
+```
+-   Since multiple imputation creates multiple linear regressions based on multiple imputations, the estimated r-value is 0.7317 with a 95% confidence interval between 0.6664 and 0.7861.
 
 # Conclusion
 

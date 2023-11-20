@@ -277,13 +277,20 @@
     "href": "slides/slidedeck.html#single-imputation",
     "title": "Missing Data and Imputation",
     "section": "Single Imputation",
-    "text": "Single Imputation\n\n# Make a copy of the dataset and calculate the mean of the specific column\npenguins_Mean_imputated <- penguins_missing\n\n\n# If we only replaced the missing values for flipper_length_mm\nflipper_length_mm_mean_value <- mean(penguins$flipper_length_mm, na.rm = TRUE)\npenguins_Mean_imputated$flipper_length_mm[is.na(penguins_Mean_imputated$flipper_length_mm)] <- flipper_length_mm_mean_value\npenguins_Mean_imputated[!complete.cases(penguins), ]\n\n# A tibble: 11 × 8\n   species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g\n   <chr>   <chr>              <dbl>         <dbl>             <dbl>       <dbl>\n 1 Adelie  Torgersen           NA            NA                201.          NA\n 2 Adelie  Torgersen           34.1          18.1              201.        3475\n 3 Adelie  Torgersen           42            20.2              190         4250\n 4 Adelie  Torgersen           37.8          17.1              186         3300\n 5 Adelie  Torgersen           37.8          17.3              180         3700\n 6 Adelie  Dream               37.5          18.9              201.        2975\n 7 Gentoo  Biscoe              44.5          14.3              216         4100\n 8 Gentoo  Biscoe              46.2          14.4              201.        4650\n 9 Gentoo  Biscoe              47.3          13.8              201.        4725\n10 Gentoo  Biscoe              44.5          15.7              201.        4875\n11 Gentoo  Biscoe              NA            NA                201.          NA\n# ℹ 2 more variables: sex <chr>, year <dbl>\n\nregg = lm(body_mass_g~ flipper_length_mm, data = penguins_Mean_imputated, na.action=na.omit)\n\n\n0.4016 is the R-Squared for the linear model where missing values are imputed as the mean."
+    "text": "Single Imputation\n\n# Make a copy of the dataset and calculate the mean of the specific column\npenguins_Mean_imputated <- penguins_missing\n\n\n# If we only replaced the missing values for flipper_length_mm\nflipper_length_mm_mean_value <- mean(penguins$flipper_length_mm, na.rm = TRUE)\npenguins_Mean_imputated$flipper_length_mm[is.na(penguins_Mean_imputated$flipper_length_mm)] <- flipper_length_mm_mean_value\n\nregg = lm(body_mass_g~ flipper_length_mm, data = penguins_Mean_imputated, na.action=na.omit)\n\n\n0.4016 is the R-Squared for the linear model where missing values are imputed as the mean."
   },
   {
     "objectID": "slides/slidedeck.html#single-imputation-continued",
     "href": "slides/slidedeck.html#single-imputation-continued",
     "title": "Missing Data and Imputation",
     "section": "Single Imputation Continued",
-    "text": "Single Imputation Continued\n\n\n\n\n0.7732 is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling."
+    "text": "Single Imputation Continued\n\npenguins_imputed <- impute_lm(penguins_missing, flipper_length_mm ~ species + bill_length_mm + bill_depth_mm)\n\nregg = lm(body_mass_g~ flipper_length_mm, data = penguins_imputed)\n\n\n0.7732 is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling."
+  },
+  {
+    "objectID": "slides/slidedeck.html#multiple-imputation",
+    "href": "slides/slidedeck.html#multiple-imputation",
+    "title": "Missing Data and Imputation",
+    "section": "Multiple Imputation",
+    "text": "Multiple Imputation\n\nlibrary(mice)\npenguins_missing.imp <- mice(penguins_missing, m=5)\nfit <- with(penguins_missing.imp, lm(body_mass_g~ flipper_length_mm))\nprint(pool.r.squared(fit))\n\n\nSince multiple imputation creates multiple linear regressions based on multiple imputations, the estimated r-value is 0.7317 with a 95% confidence interval between 0.6664 and 0.7861."
   }
 ]

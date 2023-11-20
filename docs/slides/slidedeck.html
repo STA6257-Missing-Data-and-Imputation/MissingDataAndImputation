@@ -519,25 +519,8 @@ Yoseling Gomez - Clayton Carpenter - Stesh Davis-Lewis
 <span id="cb3-5"><a href="#cb3-5"></a><span class="co"># If we only replaced the missing values for flipper_length_mm</span></span>
 <span id="cb3-6"><a href="#cb3-6"></a>flipper_length_mm_mean_value <span class="ot">&lt;-</span> <span class="fu">mean</span>(penguins<span class="sc">$</span>flipper_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb3-7"><a href="#cb3-7"></a>penguins_Mean_imputated<span class="sc">$</span>flipper_length_mm[<span class="fu">is.na</span>(penguins_Mean_imputated<span class="sc">$</span>flipper_length_mm)] <span class="ot">&lt;-</span> flipper_length_mm_mean_value</span>
-<span id="cb3-8"><a href="#cb3-8"></a>penguins_Mean_imputated[<span class="sc">!</span><span class="fu">complete.cases</span>(penguins), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 11 × 8
-   species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
-   &lt;chr&gt;   &lt;chr&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;dbl&gt;       &lt;dbl&gt;
- 1 Adelie  Torgersen           NA            NA                201.          NA
- 2 Adelie  Torgersen           34.1          18.1              201.        3475
- 3 Adelie  Torgersen           42            20.2              190         4250
- 4 Adelie  Torgersen           37.8          17.1              186         3300
- 5 Adelie  Torgersen           37.8          17.3              180         3700
- 6 Adelie  Dream               37.5          18.9              201.        2975
- 7 Gentoo  Biscoe              44.5          14.3              216         4100
- 8 Gentoo  Biscoe              46.2          14.4              201.        4650
- 9 Gentoo  Biscoe              47.3          13.8              201.        4725
-10 Gentoo  Biscoe              44.5          15.7              201.        4875
-11 Gentoo  Biscoe              NA            NA                201.          NA
-# ℹ 2 more variables: sex &lt;chr&gt;, year &lt;dbl&gt;</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>regg <span class="ot">=</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm, <span class="at">data =</span> penguins_Mean_imputated, <span class="at">na.action=</span>na.omit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-8"><a href="#cb3-8"></a></span>
+<span id="cb3-9"><a href="#cb3-9"></a>regg <span class="ot">=</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm, <span class="at">data =</span> penguins_Mean_imputated, <span class="at">na.action=</span>na.omit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>0.4016 is the R-Squared for the linear model where missing values are imputed as the mean.</li>
@@ -546,10 +529,24 @@ Yoseling Gomez - Clayton Carpenter - Stesh Davis-Lewis
 <section id="single-imputation-continued" class="slide level2">
 <h2>Single Imputation Continued</h2>
 <div class="cell">
-
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>penguins_imputed <span class="ot">&lt;-</span> <span class="fu">impute_lm</span>(penguins_missing, flipper_length_mm <span class="sc">~</span> species <span class="sc">+</span> bill_length_mm <span class="sc">+</span> bill_depth_mm)</span>
+<span id="cb4-2"><a href="#cb4-2"></a></span>
+<span id="cb4-3"><a href="#cb4-3"></a>regg <span class="ot">=</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm, <span class="at">data =</span> penguins_imputed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>0.7732 is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling.</li>
+</ul>
+</section>
+<section id="multiple-imputation" class="slide level2">
+<h2>Multiple Imputation</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">library</span>(mice)</span>
+<span id="cb5-2"><a href="#cb5-2"></a>penguins_missing.imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(penguins_missing, <span class="at">m=</span><span class="dv">5</span>)</span>
+<span id="cb5-3"><a href="#cb5-3"></a>fit <span class="ot">&lt;-</span> <span class="fu">with</span>(penguins_missing.imp, <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm))</span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="fu">print</span>(<span class="fu">pool.r.squared</span>(fit))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Since multiple imputation creates multiple linear regressions based on multiple imputations, the estimated r-value is 0.7317 with a 95% confidence interval between 0.6664 and 0.7861.</li>
 </ul>
 </section></section>
 <section>
