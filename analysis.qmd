@@ -26,7 +26,7 @@ regg = lm(body_mass_g~ flipper_length_mm, data = penguins)
 
 ```
 
-0.7583 is the R-Squared for the linear model that we will use as the benchmark for the imputation perfromed below.
+0.7583 is the R-Squared for the linear model that we will use as the benchmark for the imputation performed below.
 
 ## 4.2 Creating Missingness
 

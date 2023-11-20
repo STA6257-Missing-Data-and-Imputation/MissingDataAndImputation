@@ -2,13 +2,14 @@
 title: "Missing Data and Imputation"
 author: "Yoseling Gomez - Clayton Carpenter - Stesh Davis-Lewis"
 format: revealjs
+bibliography: references.bib
 ---
 
 # Introduction
 
 ## What is Missing Data and what are the impacts?
 
-- Missing data are null values in a dataset caused by issues such as non-responses or faulty measurement sensors
+-   Missing data are null values in a dataset caused by issues such as non-responses or faulty measurement sensors
 -   Types of missing data: MAR, MCAR, and MNAR
 -   Imperfect datasets with missing values can impact the legitimacy and reliability of the results obtained.
 
@@ -41,20 +42,75 @@ format: revealjs
 
 ## Summary
 
-```{r}
-library(palmerpenguins)
-data(package = 'palmerpenguins')
-library(summarytools)
-descr(penguins)
-```
+
 
 # Methodology
 
 # Analysis
 
+## Linear Regression before Imputation
+
+```{r}
+#| echo: true
+library(readr)
+library(missMethods)
+library(simputation)
+library(ggplot2)
+
+set.seed(1) 
+
+penguins <- readr::read_csv('penguins.csv')
+
+regg = lm(body_mass_g~ flipper_length_mm, data = penguins)
+
+```
+
+-   0.7583 is the R-Squared for the linear model on the full dataset that we will use as the benchmark.
+
+## Creating Missingness
+```{r}
+#| warning: false
+#| echo: true
+penguins_missing <- delete_MCAR(penguins,0.5,"flipper_length_mm")
+regg = lm(body_mass_g~ flipper_length_mm, data = penguins_missing, na.action=na.omit) 
+```
+-   This creates 50% missing at random data in the column flipper_length_mm using the missMethods [@missMethods] package.
+-   0.7569 is the R-Squared for the linear model where missing values are excluded from the dataset.
+
+## Single Imputation
+
+```{r}
+#| warning: false
+#| echo: true
+# Make a copy of the dataset and calculate the mean of the specific column
+penguins_Mean_imputated <- penguins_missing
+
+
+# If we only replaced the missing values for flipper_length_mm
+flipper_length_mm_mean_value <- mean(penguins$flipper_length_mm, na.rm = TRUE)
+penguins_Mean_imputated$flipper_length_mm[is.na(penguins_Mean_imputated$flipper_length_mm)] <- flipper_length_mm_mean_value
+penguins_Mean_imputated[!complete.cases(penguins), ]
+
+regg = lm(body_mass_g~ flipper_length_mm, data = penguins_Mean_imputated, na.action=na.omit)
+```
+-   0.4016 is the R-Squared for the linear model where missing values are imputed as the mean.
+
+## Single Imputation Continued
+
+```{r}
+#| warning: false
+penguins_imputed <- impute_lm(penguins_missing, flipper_length_mm ~ species + bill_length_mm + bill_depth_mm)
+
+regg = lm(body_mass_g~ flipper_length_mm, data = penguins_imputed)
+#print(paste(summary(regg)$adj.r.squared, "is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling."))
+
+```
+-   0.7732 is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling.
+
 # Conclusion
 
 ## Summary
-"Most, if not all, datasets will have missing values and require values to be imputed. We used a reasonably clean palmerpenguin dataset to demonstrate the difference between actual and imputed values. Not all imputation methods yielded the same results, nor were they a perfect match to the original values. 
 
-The best methodology will be based on several factors, such as what type of data is missing, portion of missing values, software packages, etc. We advise everyone to research the best methodology for their dataset; every method has benefits and drawbacks."
+-   "Most, if not all, datasets will have missing values and require values to be imputed. We used a reasonably clean palmerpenguin dataset to demonstrate the difference between actual and imputed values. Not all imputation methods yielded the same results, nor were they a perfect match to the original values.
+
+-   The best methodology will be based on several factors, such as what type of data is missing, portion of missing values, software packages, etc. We advise everyone to research the best methodology for their dataset; every method has benefits and drawbacks."

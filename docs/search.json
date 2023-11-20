@@ -235,7 +235,7 @@
     "href": "slides/slidedeck.html#summary",
     "title": "Missing Data and Imputation",
     "section": "Summary",
-    "text": "Summary\n\n\nDescriptive Statistics  \npenguins  \nN: 344  \n\n                    bill_depth_mm   bill_length_mm   body_mass_g   flipper_length_mm      year\n----------------- --------------- ---------------- ------------- ------------------- ---------\n             Mean           17.15            43.92       4201.75              200.92   2008.03\n          Std.Dev            1.97             5.46        801.95               14.06      0.82\n              Min           13.10            32.10       2700.00              172.00   2007.00\n               Q1           15.60            39.20       3550.00              190.00   2007.00\n           Median           17.30            44.45       4050.00              197.00   2008.00\n               Q3           18.70            48.50       4750.00              213.00   2009.00\n              Max           21.50            59.60       6300.00              231.00   2009.00\n              MAD            2.22             7.04        889.56               16.31      1.48\n              IQR            3.10             9.27       1200.00               23.00      2.00\n               CV            0.12             0.12          0.19                0.07      0.00\n         Skewness           -0.14             0.05          0.47                0.34     -0.05\n      SE.Skewness            0.13             0.13          0.13                0.13      0.13\n         Kurtosis           -0.92            -0.89         -0.74               -1.00     -1.51\n          N.Valid          342.00           342.00        342.00              342.00    344.00\n        Pct.Valid           99.42            99.42         99.42               99.42    100.00"
+    "text": "Summary"
   },
   {
     "objectID": "slides/slidedeck.html#image",
@@ -256,6 +256,34 @@
     "href": "slides/slidedeck.html#summary-1",
     "title": "Missing Data and Imputation",
     "section": "Summary",
-    "text": "Summary\n“Most, if not all, datasets will have missing values and require values to be imputed. We used a reasonably clean palmerpenguin dataset to demonstrate the difference between actual and imputed values. Not all imputation methods yielded the same results, nor were they a perfect match to the original values.\nThe best methodology will be based on several factors, such as what type of data is missing, portion of missing values, software packages, etc. We advise everyone to research the best methodology for their dataset; every method has benefits and drawbacks.”"
+    "text": "Summary\n\n“Most, if not all, datasets will have missing values and require values to be imputed. We used a reasonably clean palmerpenguin dataset to demonstrate the difference between actual and imputed values. Not all imputation methods yielded the same results, nor were they a perfect match to the original values.\nThe best methodology will be based on several factors, such as what type of data is missing, portion of missing values, software packages, etc. We advise everyone to research the best methodology for their dataset; every method has benefits and drawbacks.”\n\n\n\n\n\n\n\nRockel, Tobias. 2022. “missMethods: Methods for Missing Data.” https://CRAN.R-project.org/package=missMethods."
+  },
+  {
+    "objectID": "slides/slidedeck.html#linear-regression-before-imputation",
+    "href": "slides/slidedeck.html#linear-regression-before-imputation",
+    "title": "Missing Data and Imputation",
+    "section": "Linear Regression before Imputation",
+    "text": "Linear Regression before Imputation\n\nlibrary(readr)\nlibrary(missMethods)\nlibrary(simputation)\nlibrary(ggplot2)\n\nset.seed(1) \n\npenguins <- readr::read_csv('penguins.csv')\n\nregg = lm(body_mass_g~ flipper_length_mm, data = penguins)\n\n\n0.7583 is the R-Squared for the linear model on the full dataset that we will use as the benchmark."
+  },
+  {
+    "objectID": "slides/slidedeck.html#creating-missingness",
+    "href": "slides/slidedeck.html#creating-missingness",
+    "title": "Missing Data and Imputation",
+    "section": "Creating Missingness",
+    "text": "Creating Missingness\n\npenguins_missing <- delete_MCAR(penguins,0.5,\"flipper_length_mm\")\nregg = lm(body_mass_g~ flipper_length_mm, data = penguins_missing, na.action=na.omit) \n\n\nThis creates 50% missing at random data in the column flipper_length_mm using the missMethods (Rockel 2022) package.\n0.7569 is the R-Squared for the linear model where missing values are excluded from the dataset."
+  },
+  {
+    "objectID": "slides/slidedeck.html#single-imputation",
+    "href": "slides/slidedeck.html#single-imputation",
+    "title": "Missing Data and Imputation",
+    "section": "Single Imputation",
+    "text": "Single Imputation\n\n# Make a copy of the dataset and calculate the mean of the specific column\npenguins_Mean_imputated <- penguins_missing\n\n\n# If we only replaced the missing values for flipper_length_mm\nflipper_length_mm_mean_value <- mean(penguins$flipper_length_mm, na.rm = TRUE)\npenguins_Mean_imputated$flipper_length_mm[is.na(penguins_Mean_imputated$flipper_length_mm)] <- flipper_length_mm_mean_value\npenguins_Mean_imputated[!complete.cases(penguins), ]\n\n# A tibble: 11 × 8\n   species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g\n   <chr>   <chr>              <dbl>         <dbl>             <dbl>       <dbl>\n 1 Adelie  Torgersen           NA            NA                201.          NA\n 2 Adelie  Torgersen           34.1          18.1              201.        3475\n 3 Adelie  Torgersen           42            20.2              190         4250\n 4 Adelie  Torgersen           37.8          17.1              186         3300\n 5 Adelie  Torgersen           37.8          17.3              180         3700\n 6 Adelie  Dream               37.5          18.9              201.        2975\n 7 Gentoo  Biscoe              44.5          14.3              216         4100\n 8 Gentoo  Biscoe              46.2          14.4              201.        4650\n 9 Gentoo  Biscoe              47.3          13.8              201.        4725\n10 Gentoo  Biscoe              44.5          15.7              201.        4875\n11 Gentoo  Biscoe              NA            NA                201.          NA\n# ℹ 2 more variables: sex <chr>, year <dbl>\n\nregg = lm(body_mass_g~ flipper_length_mm, data = penguins_Mean_imputated, na.action=na.omit)\n\n\n0.4016 is the R-Squared for the linear model where missing values are imputed as the mean."
+  },
+  {
+    "objectID": "slides/slidedeck.html#single-imputation-continued",
+    "href": "slides/slidedeck.html#single-imputation-continued",
+    "title": "Missing Data and Imputation",
+    "section": "Single Imputation Continued",
+    "text": "Single Imputation Continued\n\n\n\n\n0.7732 is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling."
   }
 ]
