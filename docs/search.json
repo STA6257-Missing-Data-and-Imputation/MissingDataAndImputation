@@ -305,6 +305,13 @@
     "href": "slides/slidedeck.html#missing-data-imputation",
     "title": "Missing Data and Imputation",
     "section": "Missing Data Imputation",
-    "text": "Missing Data Imputation\n\nThere are two main types of missing data techniques: simple traditional techniques and modern techniques.\nTraditional Methods:\nDeleted records and single-valued imputation are two of the more traditional approaches to handling missing data\nList-wise deletion, missing values are completely removed from the dataset and thrown away.\nPair-wise deletion removes only partial cases to compensate for list-wise deletion data loss\nModern Imputation Techniques:\nMultiple imputations generates numerous copies of the dataset, each of which contains a unique set of imputed values.\nMaximum-likelihood imputation uses all of the data points to determine what values should be imputed for missing data."
+    "text": "Missing Data Imputation\n\nThere are two main types of missing data techniques: simple traditional techniques and modern techniques.\n\nTraditional Methods:\n\nDeleted records and single-valued imputation are two of the more traditional approaches to handling missing data\nList-wise deletion, missing values are completely removed from the dataset and thrown away. - Pair-wise deletion removes only partial cases to compensate for list-wise deletion data loss"
+  },
+  {
+    "objectID": "slides/slidedeck.html#modern-techniques",
+    "href": "slides/slidedeck.html#modern-techniques",
+    "title": "Missing Data and Imputation",
+    "section": "Modern Techniques",
+    "text": "Modern Techniques\n\nMultiple imputations generates numerous copies of the dataset, each of which contains a unique set of imputed values.\nMaximum-likelihood imputation uses all of the data points to determine what values should be imputed for missing data."
   }
 ]

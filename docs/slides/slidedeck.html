@@ -7,7 +7,7 @@
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.2.475">
+  <meta name="generator" content="quarto-1.2.269">
 
   <meta name="author" content="Yoseling Gomez - Clayton Carpenter - Stesh Davis-Lewis">
   <title>Missing Data and Imputation</title>
@@ -486,11 +486,16 @@ Yoseling Gomez - Clayton Carpenter - Stesh Davis-Lewis
 <h2>Missing Data Imputation</h2>
 <ul>
 <li>There are two main types of missing data techniques: simple traditional techniques and modern techniques.</li>
-<li>Traditional Methods:</li>
+</ul>
+<p><strong>Traditional Methods:</strong></p>
+<ul>
 <li>Deleted records and single-valued imputation are two of the more traditional approaches to handling missing data</li>
-<li>List-wise deletion, missing values are completely removed from the dataset and thrown away.</li>
-<li>Pair-wise deletion removes only partial cases to compensate for list-wise deletion data loss</li>
-<li>Modern Imputation Techniques:</li>
+<li>List-wise deletion, missing values are completely removed from the dataset and thrown away. - Pair-wise deletion removes only partial cases to compensate for list-wise deletion data loss</li>
+</ul>
+</section>
+<section id="modern-techniques" class="slide level2">
+<h2>Modern Techniques</h2>
+<ul>
 <li>Multiple imputations generates numerous copies of the dataset, each of which contains a unique set of imputed values.</li>
 <li>Maximum-likelihood imputation uses all of the data points to determine what values should be imputed for missing data.</li>
 </ul>

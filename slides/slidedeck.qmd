@@ -42,8 +42,6 @@ bibliography: references.bib
 
 ## Summary
 
-
-
 # Methodology
 
 ## Detection of the Type of Missingness
@@ -51,15 +49,17 @@ bibliography: references.bib
 -   The assumption that missing values are either MCAR or MAR is crucial to the success of methods like Multiple Imputation by Chained Equations (MICE).
 -   Little's test for MCAR detection and the likelihood-ratio test for MAR were established by statisticians to help uncover missingness.
 
-
 ## Missing Data Imputation
 
--   There are two main types of missing data techniques: simple traditional techniques and modern techniques. 
--   Traditional Methods: 
--   Deleted records and single-valued imputation are two of the more traditional approaches to handling missing data
--   List-wise deletion, missing values are completely removed from the dataset and thrown away.
--   Pair-wise deletion removes only partial cases to compensate for list-wise deletion data loss 
--   Modern Imputation Techniques:
+-   There are two main types of missing data techniques: simple traditional techniques and modern techniques.
+
+**Traditional Methods:**
+
+-   Deleted records and single-valued imputation are two of the more traditional approaches to handling missing data 
+-   List-wise deletion, missing values are completely removed from the dataset and thrown away. - Pair-wise deletion removes only partial cases to compensate for list-wise deletion data loss
+
+## Modern Techniques
+
 -   Multiple imputations generates numerous copies of the dataset, each of which contains a unique set of imputed values.
 -   Maximum-likelihood imputation uses all of the data points to determine what values should be imputed for missing data.
 
@@ -85,12 +85,14 @@ regg = lm(body_mass_g~ flipper_length_mm, data = penguins)
 -   0.7583 is the R-Squared for the linear model on the full dataset that we will use as the benchmark.
 
 ## Creating Missingness
+
 ```{r}
 #| warning: false
 #| echo: true
 penguins_missing <- delete_MCAR(penguins,0.5,"flipper_length_mm")
 regg = lm(body_mass_g~ flipper_length_mm, data = penguins_missing, na.action=na.omit) 
 ```
+
 -   This creates 50% missing at random data in the column flipper_length_mm using the missMethods [@missMethods] package.
 -   0.7569 is the R-Squared for the linear model where missing values are excluded from the dataset.
 
@@ -109,6 +111,7 @@ penguins_Mean_imputated$flipper_length_mm[is.na(penguins_Mean_imputated$flipper_
 
 regg = lm(body_mass_g~ flipper_length_mm, data = penguins_Mean_imputated, na.action=na.omit)
 ```
+
 -   0.4016 is the R-Squared for the linear model where missing values are imputed as the mean.
 
 ## Single Imputation Continued
@@ -120,9 +123,11 @@ penguins_imputed <- impute_lm(penguins_missing, flipper_length_mm ~ species + bi
 
 regg = lm(body_mass_g~ flipper_length_mm, data = penguins_imputed)
 ```
+
 -   0.7732 is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling.
 
 ## Multiple Imputation
+
 ```{r}
 #| warning: false
 #| echo: true
@@ -132,6 +137,7 @@ penguins_missing.imp <- mice(penguins_missing, m=5)
 fit <- with(penguins_missing.imp, lm(body_mass_g~ flipper_length_mm))
 print(pool.r.squared(fit))
 ```
+
 -   Since multiple imputation creates multiple linear regressions based on multiple imputations, the estimated r-value is 0.7317 with a 95% confidence interval between 0.6664 and 0.7861.
 
 # Conclusion
