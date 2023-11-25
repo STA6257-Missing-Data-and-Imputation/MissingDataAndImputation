@@ -10,7 +10,10 @@ bibliography: references.bib
 ## What is Missing Data and what are the impacts?
 
 -   Missing data are null values in a dataset caused by issues such as non-responses or faulty measurement sensors
--   Types of missing data: MAR, MCAR, and MNAR
+-   Types of missing data: 
+      - Missing at random (MAR)
+      - Missing completey at randrom (MCAR) 
+      - Missing not at random (MNAR)
 -   Imperfect datasets with missing values can impact the legitimacy and reliability of the results obtained.
 
 ## Imputation
@@ -25,6 +28,12 @@ bibliography: references.bib
 
 -   The penguins' dataset is comprised of 8 columns and 344 rows based on data collected on three different species of penguins in Palmer Archipelago, Antarctica
 
+```{r}
+#| echo: true
+penguins <- readr::read_csv('penguins.csv')
+head(penguins)
+```
+
 ## Variables
 
 -   Species
@@ -36,11 +45,100 @@ bibliography: references.bib
 -   Sex
 -   Year
 
+## Variables: Species
+```{r}
+#| echo: false
+library(ggplot2)
+library(dplyr)
+
+ggplot(penguins, aes(x = species, fill = species)) + geom_bar() +
+  labs(x = "Species", y = "Count", title = "Count of Species", fill = "Species") +
+  geom_text(
+    stat = "count",
+    aes(label = stat(count)),
+    position = position_stack(vjust = 0.9),
+    show.legend = FALSE)
+
+# count_table <- penguins %>%
+#   group_by(species) %>%
+#   summarize(count = sum(!is.na(species)))
+# 
+# total_row <- count_table %>% summarise(species = "Total", count = sum(count))
+# count_table_with_total <- bind_rows(count_table, total_row)
+# print(count_table_with_total)
+```
+
+## Variables: Island
+```{r}
+#| echo: false
+ggplot(penguins, aes(x = island, fill = island)) + geom_bar() +
+  labs(x = "Island", y = "Count", title = "Count of Island", fill = "Island") +
+  geom_text(
+    stat = "count",
+    aes(label = stat(count)),
+    position = position_stack(vjust = 0.9),
+    show.legend = FALSE) 
+
+# count_table <- penguins %>%
+#   group_by(island) %>%
+#   summarize(count = sum(!is.na(island)))
+# 
+# total_row <- count_table %>% summarise(island = "Total", count = sum(count))
+# count_table_with_total <- bind_rows(count_table, total_row)
+# print(count_table_with_total)
+```
+
+## Variables: Bill Length & Bill Depth 
+```{r}
+#| echo: false
+ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm, color = species)) + geom_point() +
+  labs(x = "Bill Length (mm)", y = "Bill Depth (mm)", title = "Penguin Bill Dimensions by Species") +
+  scale_color_discrete(name = "Penguin Species")
+```
+## Variables: Flipper_length_mm
+```{r}
+#| echo: false
+ggplot(penguins, aes(x = species, y = flipper_length_mm, fill = species)) +
+  geom_boxplot() +
+  labs(x = "Species", y = "Flipper Length (mm)", title = "Flipper Length by Species", fill = "Species")
+```
+
+## Variables: Body_mass_g
+```{r}
+#| echo: false
+ggplot(penguins, aes(x = species, y = body_mass_g, fill = species)) +
+  geom_boxplot() +
+  labs(x = "Species", y = "Body Mass (g)", title = "Body Mass by Species", fill = "Species")
+```
+
+## Variables: Sex
+```{r}
+#| echo: false
+ggplot(penguins, aes(x = "", fill = sex)) +
+  geom_bar(stat = "count", width = 1, show.legend = TRUE) +
+  coord_polar(theta = "y") +
+  labs(title = "Percentage Distribution of Penguin Sexes", fill = "Sex") +
+  geom_text(stat = "count", aes(label = scales::percent(stat(count)/sum(stat(count)))), position = position_stack(vjust = 0.5)) +
+  theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + theme_void()
+```
+
+## Variables: Year
+```{r}
+#| echo: false
+ggplot(penguins, aes(x = factor(year), fill = species)) +
+  geom_bar() +
+  labs(x = "Year", y = "Count of Species Observations", title = "Species Observations Collected Each Year", fill = "Species") +
+  geom_text(
+    aes(label = ..count..),
+    stat = "count",
+    position = position_stack(vjust = 0.5),
+    show.legend = FALSE) 
+```
+
+
 ## Image
 
 ![](/imgs/culmen_depth.png)
-
-## Summary
 
 # Methodology
 
@@ -144,6 +242,6 @@ print(pool.r.squared(fit))
 
 ## Summary
 
--   "Most, if not all, datasets will have missing values and require values to be imputed. We used a reasonably clean palmerpenguin dataset to demonstrate the difference between actual and imputed values. Not all imputation methods yielded the same results, nor were they a perfect match to the original values.
+-   Most, if not all, datasets will have missing values and require values to be imputed. We used a reasonably clean palmerpenguin dataset to demonstrate the difference between actual and imputed values. Not all imputation methods yielded the same results, nor were they a perfect match to the original values.
 
--   The best methodology will be based on several factors, such as what type of data is missing, portion of missing values, software packages, etc. We advise everyone to research the best methodology for their dataset; every method has benefits and drawbacks."
+-   The best methodology will be based on several factors, such as what type of data is missing, portion of missing values, software packages, etc. We advise everyone to research the best methodology for their dataset; every method has benefits and drawbacks.
