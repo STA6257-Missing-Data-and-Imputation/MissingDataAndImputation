@@ -221,7 +221,7 @@
     "href": "slides/slidedeck.html#palmerpenguin",
     "title": "Missing Data and Imputation",
     "section": "palmerpenguin",
-    "text": "palmerpenguin\n\nThe penguins’ dataset is comprised of 8 columns and 344 rows based on data collected on three different species of penguins in Palmer Archipelago, Antarctica"
+    "text": "palmerpenguin\n\nThe penguins’ dataset is comprised of 8 columns and 344 rows based on data collected on three different species of penguins in Palmer Archipelago, Antarctica\n\n\npenguins <- readr::read_csv('penguins.csv')\nhead(penguins)\n\n# A tibble: 6 × 8\n  species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g\n  <chr>   <chr>              <dbl>         <dbl>             <dbl>       <dbl>\n1 Adelie  Torgersen           39.1          18.7               181        3750\n2 Adelie  Torgersen           39.5          17.4               186        3800\n3 Adelie  Torgersen           40.3          18                 195        3250\n4 Adelie  Torgersen           NA            NA                  NA          NA\n5 Adelie  Torgersen           36.7          19.3               193        3450\n6 Adelie  Torgersen           39.3          20.6               190        3650\n# ℹ 2 more variables: sex <chr>, year <dbl>"
   },
   {
     "objectID": "slides/slidedeck.html#variables",
@@ -235,7 +235,7 @@
     "href": "slides/slidedeck.html#summary",
     "title": "Missing Data and Imputation",
     "section": "Summary",
-    "text": "Summary"
+    "text": "Summary\n\nMost, if not all, datasets will have missing values and require values to be imputed. We used a reasonably clean palmerpenguin dataset to demonstrate the difference between actual and imputed values. Not all imputation methods yielded the same results, nor were they a perfect match to the original values.\nThe best methodology will be based on several factors, such as what type of data is missing, portion of missing values, software packages, etc. We advise everyone to research the best methodology for their dataset; every method has benefits and drawbacks.\n\n\n\n\n\n\n\nRockel, Tobias. 2022. “missMethods: Methods for Missing Data.” https://CRAN.R-project.org/package=missMethods."
   },
   {
     "objectID": "slides/slidedeck.html#image",
@@ -249,7 +249,7 @@
     "href": "slides/slidedeck.html#what-is-missing-data-and-what-are-the-impacts",
     "title": "Missing Data and Imputation",
     "section": "What is Missing Data and what are the impacts?",
-    "text": "What is Missing Data and what are the impacts?\n\nMissing data are null values in a dataset caused by issues such as non-responses or faulty measurement sensors\nTypes of missing data: MAR, MCAR, and MNAR\nImperfect datasets with missing values can impact the legitimacy and reliability of the results obtained."
+    "text": "What is Missing Data and what are the impacts?\n\nMissing data are null values in a dataset caused by issues such as non-responses or faulty measurement sensors\nTypes of missing data:\n\nMissing at random (MAR)\nMissing completey at randrom (MCAR)\nMissing not at random (MNAR)\n\nImperfect datasets with missing values can impact the legitimacy and reliability of the results obtained."
   },
   {
     "objectID": "slides/slidedeck.html#summary-1",
@@ -313,5 +313,54 @@
     "title": "Missing Data and Imputation",
     "section": "Modern Techniques",
     "text": "Modern Techniques\n\nMultiple imputations generates numerous copies of the dataset, each of which contains a unique set of imputed values.\nMaximum-likelihood imputation uses all of the data points to determine what values should be imputed for missing data."
+  },
+  {
+    "objectID": "slides/slidedeck.html#variables-species",
+    "href": "slides/slidedeck.html#variables-species",
+    "title": "Missing Data and Imputation",
+    "section": "Variables: Species",
+    "text": "Variables: Species"
+  },
+  {
+    "objectID": "slides/slidedeck.html#variables-island",
+    "href": "slides/slidedeck.html#variables-island",
+    "title": "Missing Data and Imputation",
+    "section": "Variables: Island",
+    "text": "Variables: Island"
+  },
+  {
+    "objectID": "slides/slidedeck.html#variables-bill-length-bill-depth",
+    "href": "slides/slidedeck.html#variables-bill-length-bill-depth",
+    "title": "Missing Data and Imputation",
+    "section": "Variables: Bill Length & Bill Depth",
+    "text": "Variables: Bill Length & Bill Depth"
+  },
+  {
+    "objectID": "slides/slidedeck.html#variables-flipper_length_mm",
+    "href": "slides/slidedeck.html#variables-flipper_length_mm",
+    "title": "Missing Data and Imputation",
+    "section": "Variables: Flipper_length_mm",
+    "text": "Variables: Flipper_length_mm"
+  },
+  {
+    "objectID": "slides/slidedeck.html#variables-body_mass_g",
+    "href": "slides/slidedeck.html#variables-body_mass_g",
+    "title": "Missing Data and Imputation",
+    "section": "Variables: Body_mass_g",
+    "text": "Variables: Body_mass_g"
+  },
+  {
+    "objectID": "slides/slidedeck.html#variables-sex",
+    "href": "slides/slidedeck.html#variables-sex",
+    "title": "Missing Data and Imputation",
+    "section": "Variables: Sex",
+    "text": "Variables: Sex"
+  },
+  {
+    "objectID": "slides/slidedeck.html#variables-year",
+    "href": "slides/slidedeck.html#variables-year",
+    "title": "Missing Data and Imputation",
+    "section": "Variables: Year",
+    "text": "Variables: Year"
   }
 ]

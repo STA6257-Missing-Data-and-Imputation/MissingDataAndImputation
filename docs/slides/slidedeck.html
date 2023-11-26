@@ -7,7 +7,7 @@
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.2.269">
+  <meta name="generator" content="quarto-1.2.475">
 
   <meta name="author" content="Yoseling Gomez - Clayton Carpenter - Stesh Davis-Lewis">
   <title>Missing Data and Imputation</title>
@@ -427,7 +427,12 @@ Yoseling Gomez - Clayton Carpenter - Stesh Davis-Lewis
 <h2>What is Missing Data and what are the impacts?</h2>
 <ul>
 <li>Missing data are null values in a dataset caused by issues such as non-responses or faulty measurement sensors</li>
-<li>Types of missing data: MAR, MCAR, and MNAR</li>
+<li>Types of missing data:
+<ul>
+<li>Missing at random (MAR)</li>
+<li>Missing completey at randrom (MCAR)</li>
+<li>Missing not at random (MNAR)</li>
+</ul></li>
 <li>Imperfect datasets with missing values can impact the legitimacy and reliability of the results obtained.</li>
 </ul>
 </section>
@@ -449,6 +454,22 @@ Yoseling Gomez - Clayton Carpenter - Stesh Davis-Lewis
 <ul>
 <li>The penguins’ dataset is comprised of 8 columns and 344 rows based on data collected on three different species of penguins in Palmer Archipelago, Antarctica</li>
 </ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>penguins <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'penguins.csv'</span>)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">head</span>(penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 8
+  species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+  &lt;chr&gt;   &lt;chr&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;dbl&gt;       &lt;dbl&gt;
+1 Adelie  Torgersen           39.1          18.7               181        3750
+2 Adelie  Torgersen           39.5          17.4               186        3800
+3 Adelie  Torgersen           40.3          18                 195        3250
+4 Adelie  Torgersen           NA            NA                  NA          NA
+5 Adelie  Torgersen           36.7          19.3               193        3450
+6 Adelie  Torgersen           39.3          20.6               190        3650
+# ℹ 2 more variables: sex &lt;chr&gt;, year &lt;dbl&gt;</code></pre>
+</div>
+</div>
 </section>
 <section id="variables" class="slide level2">
 <h2>Variables</h2>
@@ -463,13 +484,38 @@ Yoseling Gomez - Clayton Carpenter - Stesh Davis-Lewis
 <li>Year</li>
 </ul>
 </section>
+<section id="variables-species" class="slide level2">
+<h2>Variables: Species</h2>
+
+<img data-src="slidedeck_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"></section>
+<section id="variables-island" class="slide level2">
+<h2>Variables: Island</h2>
+
+<img data-src="slidedeck_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section>
+<section id="variables-bill-length-bill-depth" class="slide level2">
+<h2>Variables: Bill Length &amp; Bill Depth</h2>
+
+<img data-src="slidedeck_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section>
+<section id="variables-flipper_length_mm" class="slide level2">
+<h2>Variables: Flipper_length_mm</h2>
+
+<img data-src="slidedeck_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
+<section id="variables-body_mass_g" class="slide level2">
+<h2>Variables: Body_mass_g</h2>
+
+<img data-src="slidedeck_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
+<section id="variables-sex" class="slide level2">
+<h2>Variables: Sex</h2>
+
+<img data-src="slidedeck_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"></section>
+<section id="variables-year" class="slide level2">
+<h2>Variables: Year</h2>
+
+<img data-src="slidedeck_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
 <section id="image" class="slide level2">
 <h2>Image</h2>
 
-<img data-src="../imgs/culmen_depth.png" class="r-stretch"></section>
-<section id="summary" class="slide level2">
-<h2>Summary</h2>
-</section></section>
+<img data-src="../imgs/culmen_depth.png" class="r-stretch"></section></section>
 <section>
 <section id="methodology" class="title-slide slide level1 center">
 <h1>Methodology</h1>
@@ -508,16 +554,16 @@ Yoseling Gomez - Clayton Carpenter - Stesh Davis-Lewis
 <section id="linear-regression-before-imputation" class="slide level2">
 <h2>Linear Regression before Imputation</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(missMethods)</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(simputation)</span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-5"><a href="#cb1-5"></a></span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">set.seed</span>(<span class="dv">1</span>) </span>
-<span id="cb1-7"><a href="#cb1-7"></a></span>
-<span id="cb1-8"><a href="#cb1-8"></a>penguins <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'penguins.csv'</span>)</span>
-<span id="cb1-9"><a href="#cb1-9"></a></span>
-<span id="cb1-10"><a href="#cb1-10"></a>regg <span class="ot">=</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm, <span class="at">data =</span> penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">library</span>(missMethods)</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="fu">library</span>(simputation)</span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb3-5"><a href="#cb3-5"></a></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="fu">set.seed</span>(<span class="dv">1</span>) </span>
+<span id="cb3-7"><a href="#cb3-7"></a></span>
+<span id="cb3-8"><a href="#cb3-8"></a>penguins <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'penguins.csv'</span>)</span>
+<span id="cb3-9"><a href="#cb3-9"></a></span>
+<span id="cb3-10"><a href="#cb3-10"></a>regg <span class="ot">=</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm, <span class="at">data =</span> penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>0.7583 is the R-Squared for the linear model on the full dataset that we will use as the benchmark.</li>
@@ -526,26 +572,26 @@ Yoseling Gomez - Clayton Carpenter - Stesh Davis-Lewis
 <section id="creating-missingness" class="slide level2">
 <h2>Creating Missingness</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>penguins_missing <span class="ot">&lt;-</span> <span class="fu">delete_MCAR</span>(penguins,<span class="fl">0.5</span>,<span class="st">"flipper_length_mm"</span>)</span>
-<span id="cb2-2"><a href="#cb2-2"></a>regg <span class="ot">=</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm, <span class="at">data =</span> penguins_missing, <span class="at">na.action=</span>na.omit) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>penguins_missing <span class="ot">&lt;-</span> <span class="fu">delete_MCAR</span>(penguins,<span class="fl">0.5</span>,<span class="st">"flipper_length_mm"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2"></a>regg <span class="ot">=</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm, <span class="at">data =</span> penguins_missing, <span class="at">na.action=</span>na.omit) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
-<li>This creates 50% missing at random data in the column flipper_length_mm using the missMethods <span class="citation" data-cites="missMethods">(<a href="#/summary-1" role="doc-biblioref" onclick="">Rockel 2022</a>)</span> package.</li>
+<li>This creates 50% missing at random data in the column flipper_length_mm using the missMethods <span class="citation" data-cites="missMethods">(<a href="#/summary" role="doc-biblioref" onclick="">Rockel 2022</a>)</span> package.</li>
 <li>0.7569 is the R-Squared for the linear model where missing values are excluded from the dataset.</li>
 </ul>
 </section>
 <section id="single-imputation" class="slide level2">
 <h2>Single Imputation</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Make a copy of the dataset and calculate the mean of the specific column</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>penguins_Mean_imputated <span class="ot">&lt;-</span> penguins_missing</span>
-<span id="cb3-3"><a href="#cb3-3"></a></span>
-<span id="cb3-4"><a href="#cb3-4"></a></span>
-<span id="cb3-5"><a href="#cb3-5"></a><span class="co"># If we only replaced the missing values for flipper_length_mm</span></span>
-<span id="cb3-6"><a href="#cb3-6"></a>flipper_length_mm_mean_value <span class="ot">&lt;-</span> <span class="fu">mean</span>(penguins<span class="sc">$</span>flipper_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb3-7"><a href="#cb3-7"></a>penguins_Mean_imputated<span class="sc">$</span>flipper_length_mm[<span class="fu">is.na</span>(penguins_Mean_imputated<span class="sc">$</span>flipper_length_mm)] <span class="ot">&lt;-</span> flipper_length_mm_mean_value</span>
-<span id="cb3-8"><a href="#cb3-8"></a></span>
-<span id="cb3-9"><a href="#cb3-9"></a>regg <span class="ot">=</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm, <span class="at">data =</span> penguins_Mean_imputated, <span class="at">na.action=</span>na.omit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Make a copy of the dataset and calculate the mean of the specific column</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>penguins_Mean_imputated <span class="ot">&lt;-</span> penguins_missing</span>
+<span id="cb5-3"><a href="#cb5-3"></a></span>
+<span id="cb5-4"><a href="#cb5-4"></a></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="co"># If we only replaced the missing values for flipper_length_mm</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>flipper_length_mm_mean_value <span class="ot">&lt;-</span> <span class="fu">mean</span>(penguins<span class="sc">$</span>flipper_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-7"><a href="#cb5-7"></a>penguins_Mean_imputated<span class="sc">$</span>flipper_length_mm[<span class="fu">is.na</span>(penguins_Mean_imputated<span class="sc">$</span>flipper_length_mm)] <span class="ot">&lt;-</span> flipper_length_mm_mean_value</span>
+<span id="cb5-8"><a href="#cb5-8"></a></span>
+<span id="cb5-9"><a href="#cb5-9"></a>regg <span class="ot">=</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm, <span class="at">data =</span> penguins_Mean_imputated, <span class="at">na.action=</span>na.omit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>0.4016 is the R-Squared for the linear model where missing values are imputed as the mean.</li>
@@ -554,9 +600,9 @@ Yoseling Gomez - Clayton Carpenter - Stesh Davis-Lewis
 <section id="single-imputation-continued" class="slide level2">
 <h2>Single Imputation Continued</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>penguins_imputed <span class="ot">&lt;-</span> <span class="fu">impute_lm</span>(penguins_missing, flipper_length_mm <span class="sc">~</span> species <span class="sc">+</span> bill_length_mm <span class="sc">+</span> bill_depth_mm)</span>
-<span id="cb4-2"><a href="#cb4-2"></a></span>
-<span id="cb4-3"><a href="#cb4-3"></a>regg <span class="ot">=</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm, <span class="at">data =</span> penguins_imputed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>penguins_imputed <span class="ot">&lt;-</span> <span class="fu">impute_lm</span>(penguins_missing, flipper_length_mm <span class="sc">~</span> species <span class="sc">+</span> bill_length_mm <span class="sc">+</span> bill_depth_mm)</span>
+<span id="cb6-2"><a href="#cb6-2"></a></span>
+<span id="cb6-3"><a href="#cb6-3"></a>regg <span class="ot">=</span> <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm, <span class="at">data =</span> penguins_imputed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>0.7732 is the R-Squared for the linear model where imputation of missing values was performed with another linear model before modeling.</li>
@@ -565,10 +611,10 @@ Yoseling Gomez - Clayton Carpenter - Stesh Davis-Lewis
 <section id="multiple-imputation" class="slide level2">
 <h2>Multiple Imputation</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">library</span>(mice)</span>
-<span id="cb5-2"><a href="#cb5-2"></a>penguins_missing.imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(penguins_missing, <span class="at">m=</span><span class="dv">5</span>)</span>
-<span id="cb5-3"><a href="#cb5-3"></a>fit <span class="ot">&lt;-</span> <span class="fu">with</span>(penguins_missing.imp, <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm))</span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="fu">print</span>(<span class="fu">pool.r.squared</span>(fit))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">library</span>(mice)</span>
+<span id="cb7-2"><a href="#cb7-2"></a>penguins_missing.imp <span class="ot">&lt;-</span> <span class="fu">mice</span>(penguins_missing, <span class="at">m=</span><span class="dv">5</span>)</span>
+<span id="cb7-3"><a href="#cb7-3"></a>fit <span class="ot">&lt;-</span> <span class="fu">with</span>(penguins_missing.imp, <span class="fu">lm</span>(body_mass_g<span class="sc">~</span> flipper_length_mm))</span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="fu">print</span>(<span class="fu">pool.r.squared</span>(fit))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>Since multiple imputation creates multiple linear regressions based on multiple imputations, the estimated r-value is 0.7317 with a 95% confidence interval between 0.6664 and 0.7861.</li>
@@ -579,11 +625,11 @@ Yoseling Gomez - Clayton Carpenter - Stesh Davis-Lewis
 <h1>Conclusion</h1>
 
 </section>
-<section id="summary-1" class="slide level2 smaller scrollable">
+<section id="summary" class="slide level2 smaller scrollable">
 <h2>Summary</h2>
 <ul>
-<li><p>“Most, if not all, datasets will have missing values and require values to be imputed. We used a reasonably clean palmerpenguin dataset to demonstrate the difference between actual and imputed values. Not all imputation methods yielded the same results, nor were they a perfect match to the original values.</p></li>
-<li><p>The best methodology will be based on several factors, such as what type of data is missing, portion of missing values, software packages, etc. We advise everyone to research the best methodology for their dataset; every method has benefits and drawbacks.”</p></li>
+<li><p>Most, if not all, datasets will have missing values and require values to be imputed. We used a reasonably clean palmerpenguin dataset to demonstrate the difference between actual and imputed values. Not all imputation methods yielded the same results, nor were they a perfect match to the original values.</p></li>
+<li><p>The best methodology will be based on several factors, such as what type of data is missing, portion of missing values, software packages, etc. We advise everyone to research the best methodology for their dataset; every method has benefits and drawbacks.</p></li>
 </ul>
 
 <div class="footer footer-default">
