@@ -524,8 +524,16 @@ Yoseling Gomez - Clayton Carpenter - Stesh Davis-Lewis
 <section id="detection-of-the-type-of-missingness" class="slide level2">
 <h2>Detection of the Type of Missingness</h2>
 <ul>
+<li>Statistical approaches for missing data are based on the assumption that the data is MCAR. Before imputation, the assumptions about data missingness must be validated.</li>
+</ul>
+</section>
+<section id="tests-of-missing-data" class="slide level2">
+<h2>Tests of Missing Data</h2>
+<ul>
 <li>The assumption that missing values are either MCAR or MAR is crucial to the success of methods like Multiple Imputation by Chained Equations (MICE).</li>
 <li>Little’s test for MCAR detection and the likelihood-ratio test for MAR were established by statisticians to help uncover missingness.</li>
+<li>The Chi-Square test examines the goodness of fit and independence of two categorical variables.</li>
+<li>Dixon’s MCAR test, which compares the means of complete and incomplete cases, determines whether the data are MCAR if the t-statistic is negligible.</li>
 </ul>
 </section>
 <section id="missing-data-imputation" class="slide level2">
@@ -544,6 +552,8 @@ Yoseling Gomez - Clayton Carpenter - Stesh Davis-Lewis
 <ul>
 <li>Multiple imputations generates numerous copies of the dataset, each of which contains a unique set of imputed values.</li>
 <li>Maximum-likelihood imputation uses all of the data points to determine what values should be imputed for missing data.</li>
+<li>Multiple imputations give objective findings.</li>
+<li>Using theory analysis, filling in missing values, and combining estimates into a single set of results are all parts of imputed data analysis.</li>
 </ul>
 </section></section>
 <section>

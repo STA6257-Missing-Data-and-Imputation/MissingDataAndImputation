@@ -32,7 +32,7 @@
     "href": "analysis.html",
     "title": "4. Analysis",
     "section": "",
-    "text": "In order to understand the benefits of imputation, we need to perform a linear regression on the entire data set in order to have a reference for what the R-Squared value can be will all of the available data.\n\nlibrary(readr)\nlibrary(missMethods)\nlibrary(simputation)\nlibrary(ggplot2)\n\nset.seed(1) \n\npenguins <- readr::read_csv('penguins.csv')\n\nregg = lm(body_mass_g~ flipper_length_mm, data = penguins)\n\n#print(paste(summary(regg)$adj.r.squared, \"is the R-Squared for the linear model\"))\n\n0.7583 is the R-Squared for the linear model that we will use as the benchmark for the imputation perfromed below."
+    "text": "In order to understand the benefits of imputation, we need to perform a linear regression on the entire data set in order to have a reference for what the R-Squared value can be will all of the available data.\n\nlibrary(readr)\nlibrary(missMethods)\nlibrary(simputation)\nlibrary(ggplot2)\n\nset.seed(1) \n\npenguins <- readr::read_csv('penguins.csv')\n\nregg = lm(body_mass_g~ flipper_length_mm, data = penguins)\n\n#print(paste(summary(regg)$adj.r.squared, \"is the R-Squared for the linear model\"))\n\n0.7583 is the R-Squared for the linear model that we will use as the benchmark for the imputation performed below."
   },
   {
     "objectID": "methodology.html",
@@ -298,7 +298,7 @@
     "href": "slides/slidedeck.html#detection-of-the-type-of-missingness",
     "title": "Missing Data and Imputation",
     "section": "Detection of the Type of Missingness",
-    "text": "Detection of the Type of Missingness\n\nThe assumption that missing values are either MCAR or MAR is crucial to the success of methods like Multiple Imputation by Chained Equations (MICE).\nLittle’s test for MCAR detection and the likelihood-ratio test for MAR were established by statisticians to help uncover missingness."
+    "text": "Detection of the Type of Missingness\n\nStatistical approaches for missing data are based on the assumption that the data is MCAR. Before imputation, the assumptions about data missingness must be validated."
   },
   {
     "objectID": "slides/slidedeck.html#missing-data-imputation",
@@ -312,7 +312,7 @@
     "href": "slides/slidedeck.html#modern-techniques",
     "title": "Missing Data and Imputation",
     "section": "Modern Techniques",
-    "text": "Modern Techniques\n\nMultiple imputations generates numerous copies of the dataset, each of which contains a unique set of imputed values.\nMaximum-likelihood imputation uses all of the data points to determine what values should be imputed for missing data."
+    "text": "Modern Techniques\n\nMultiple imputations generates numerous copies of the dataset, each of which contains a unique set of imputed values.\nMaximum-likelihood imputation uses all of the data points to determine what values should be imputed for missing data.\nMultiple imputations give objective findings.\nUsing theory analysis, filling in missing values, and combining estimates into a single set of results are all parts of imputed data analysis."
   },
   {
     "objectID": "slides/slidedeck.html#variables-species",
@@ -362,5 +362,19 @@
     "title": "Missing Data and Imputation",
     "section": "Variables: Year",
     "text": "Variables: Year"
+  },
+  {
+    "objectID": "slides/slidedeck.html",
+    "href": "slides/slidedeck.html",
+    "title": "Missing Data and Imputation",
+    "section": "",
+    "text": "Missing data are null values in a dataset caused by issues such as non-responses or faulty measurement sensors\nTypes of missing data:\n\nMissing at random (MAR)\nMissing completey at randrom (MCAR)\nMissing not at random (MNAR)\n\nImperfect datasets with missing values can impact the legitimacy and reliability of the results obtained.\n\n\n\n\n\nSimple Imputation: Replacing the missing value with one imputed value.\nMultiple Imputation: Creating multiple datasets with multiple imputed values.\nMultivariate Imputation by Chained Equation: Method that anticipates missing data by using existing data for other variables."
+  },
+  {
+    "objectID": "slides/slidedeck.html#tests-of-missing-data",
+    "href": "slides/slidedeck.html#tests-of-missing-data",
+    "title": "Missing Data and Imputation",
+    "section": "Tests of Missing Data",
+    "text": "Tests of Missing Data\n\nThe assumption that missing values are either MCAR or MAR is crucial to the success of methods like Multiple Imputation by Chained Equations (MICE).\nLittle’s test for MCAR detection and the likelihood-ratio test for MAR were established by statisticians to help uncover missingness.\nThe Chi-Square test examines the goodness of fit and independence of two categorical variables.\nDixon’s MCAR test, which compares the means of complete and incomplete cases, determines whether the data are MCAR if the t-statistic is negligible."
   }
 ]
