@@ -151,8 +151,14 @@ ggplot(penguins, aes(x = factor(year), fill = species)) +
 
 ## Detection of the Type of Missingness
 
+- Statistical approaches for missing data are based on the assumption that the data is MCAR. Before imputation, the assumptions about data missingness must be validated.
+
+## Tests of Missing Data
+
 -   The assumption that missing values are either MCAR or MAR is crucial to the success of methods like Multiple Imputation by Chained Equations (MICE).
 -   Little's test for MCAR detection and the likelihood-ratio test for MAR were established by statisticians to help uncover missingness.
+- The Chi-Square test examines the goodness of fit and independence of two categorical variables.
+- Dixon's MCAR test, which compares the means of complete and incomplete cases, determines whether the data are MCAR if the t-statistic is negligible. 
 
 ## Missing Data Imputation
 
@@ -160,13 +166,15 @@ ggplot(penguins, aes(x = factor(year), fill = species)) +
 
 **Traditional Methods:**
 
--   Deleted records and single-valued imputation are two of the more traditional approaches to handling missing data
+-   Deleted records and single-valued imputation are two of the more traditional approaches to handling missing data 
 -   List-wise deletion, missing values are completely removed from the dataset and thrown away. - Pair-wise deletion removes only partial cases to compensate for list-wise deletion data loss
 
 ## Modern Techniques
 
 -   Multiple imputations generates numerous copies of the dataset, each of which contains a unique set of imputed values.
 -   Maximum-likelihood imputation uses all of the data points to determine what values should be imputed for missing data.
+-  Multiple imputations give objective findings.
+-  Using theory analysis, filling in missing values, and combining estimates into a single set of results are all parts of imputed data analysis.
 
 # Analysis
 
