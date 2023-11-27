@@ -235,7 +235,7 @@
     "href": "slides/slidedeck.html#summary",
     "title": "Missing Data and Imputation",
     "section": "Summary",
-    "text": "Summary\n\nMost, if not all, datasets will have missing values and require values to be imputed. We used a reasonably clean palmerpenguin dataset to demonstrate the difference between actual and imputed values. Not all imputation methods yielded the same results, nor were they a perfect match to the original values.\nThe best methodology will be based on several factors, such as what type of data is missing, portion of missing values, software packages, etc. We advise everyone to research the best methodology for their dataset; every method has benefits and drawbacks.\n\n\n\n\n\n\n\nRockel, Tobias. 2022. “missMethods: Methods for Missing Data.” https://CRAN.R-project.org/package=missMethods."
+    "text": "Summary\n\nMost, if not all, datasets will have missing values and require values to be imputed. We used a reasonably clean palmerpenguin dataset to demonstrate the difference between actual and imputed values. Not all imputation methods yielded the same results, nor were they a perfect match to the original values.\nThe best methodology will be based on several factors, such as what type of data is missing, portion of missing values, software packages, etc. We advise everyone to research the best methodology for their dataset; every method has benefits and drawbacks.\n\n\n\n\n\n\n\nBuuren, Stef van, and Karin Groothuis-Oudshoorn. 2011. “Mice: Multivariate Imputation by Chained Equations in r” 45: 1–67. https://doi.org/10.18637/jss.v045.i03.\n\n\nRockel, Tobias. 2022. “missMethods: Methods for Missing Data.” https://CRAN.R-project.org/package=missMethods."
   },
   {
     "objectID": "slides/slidedeck.html#image",
@@ -291,7 +291,7 @@
     "href": "slides/slidedeck.html#multiple-imputation",
     "title": "Missing Data and Imputation",
     "section": "Multiple Imputation",
-    "text": "Multiple Imputation\n\nlibrary(mice)\npenguins_missing.imp <- mice(penguins_missing, m=5)\nfit <- with(penguins_missing.imp, lm(body_mass_g~ flipper_length_mm))\nprint(pool.r.squared(fit))\n\n\nSince multiple imputation creates multiple linear regressions based on multiple imputations, the estimated r-value is 0.7317 with a 95% confidence interval between 0.6664 and 0.7861."
+    "text": "Multiple Imputation\n\nlibrary(mice)\npenguins_missing.imp <- mice(penguins_missing, m=5)\nfit <- with(penguins_missing.imp, lm(body_mass_g~ flipper_length_mm))\nprint(pool.r.squared(fit))\n\n\nSince multiple imputation creates multiple linear regressions based on multiple imputations, the estimated r-value is 0.7317 with a 95% confidence interval between 0.6664 and 0.7861. (Buuren and Groothuis-Oudshoorn 2011)"
   },
   {
     "objectID": "slides/slidedeck.html#detection-of-the-type-of-missingness",

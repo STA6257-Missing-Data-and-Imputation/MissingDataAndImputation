@@ -10,10 +10,10 @@ bibliography: references.bib
 ## What is Missing Data and what are the impacts?
 
 -   Missing data are null values in a dataset caused by issues such as non-responses or faulty measurement sensors
--   Types of missing data: 
-      - Missing at random (MAR)
-      - Missing completey at randrom (MCAR) 
-      - Missing not at random (MNAR)
+-   Types of missing data:
+    -   Missing at random (MAR)
+    -   Missing completey at randrom (MCAR)
+    -   Missing not at random (MNAR)
 -   Imperfect datasets with missing values can impact the legitimacy and reliability of the results obtained.
 
 ## Imputation
@@ -46,6 +46,7 @@ head(penguins)
 -   Year
 
 ## Variables: Species
+
 ```{r}
 #| echo: false
 library(ggplot2)
@@ -69,6 +70,7 @@ ggplot(penguins, aes(x = species, fill = species)) + geom_bar() +
 ```
 
 ## Variables: Island
+
 ```{r}
 #| echo: false
 ggplot(penguins, aes(x = island, fill = island)) + geom_bar() +
@@ -88,14 +90,17 @@ ggplot(penguins, aes(x = island, fill = island)) + geom_bar() +
 # print(count_table_with_total)
 ```
 
-## Variables: Bill Length & Bill Depth 
+## Variables: Bill Length & Bill Depth
+
 ```{r}
 #| echo: false
 ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm, color = species)) + geom_point() +
   labs(x = "Bill Length (mm)", y = "Bill Depth (mm)", title = "Penguin Bill Dimensions by Species") +
   scale_color_discrete(name = "Penguin Species")
 ```
+
 ## Variables: Flipper_length_mm
+
 ```{r}
 #| echo: false
 ggplot(penguins, aes(x = species, y = flipper_length_mm, fill = species)) +
@@ -104,6 +109,7 @@ ggplot(penguins, aes(x = species, y = flipper_length_mm, fill = species)) +
 ```
 
 ## Variables: Body_mass_g
+
 ```{r}
 #| echo: false
 ggplot(penguins, aes(x = species, y = body_mass_g, fill = species)) +
@@ -112,6 +118,7 @@ ggplot(penguins, aes(x = species, y = body_mass_g, fill = species)) +
 ```
 
 ## Variables: Sex
+
 ```{r}
 #| echo: false
 ggplot(penguins, aes(x = "", fill = sex)) +
@@ -123,6 +130,7 @@ ggplot(penguins, aes(x = "", fill = sex)) +
 ```
 
 ## Variables: Year
+
 ```{r}
 #| echo: false
 ggplot(penguins, aes(x = factor(year), fill = species)) +
@@ -134,7 +142,6 @@ ggplot(penguins, aes(x = factor(year), fill = species)) +
     position = position_stack(vjust = 0.5),
     show.legend = FALSE) 
 ```
-
 
 ## Image
 
@@ -153,7 +160,7 @@ ggplot(penguins, aes(x = factor(year), fill = species)) +
 
 **Traditional Methods:**
 
--   Deleted records and single-valued imputation are two of the more traditional approaches to handling missing data 
+-   Deleted records and single-valued imputation are two of the more traditional approaches to handling missing data
 -   List-wise deletion, missing values are completely removed from the dataset and thrown away. - Pair-wise deletion removes only partial cases to compensate for list-wise deletion data loss
 
 ## Modern Techniques
@@ -236,7 +243,7 @@ fit <- with(penguins_missing.imp, lm(body_mass_g~ flipper_length_mm))
 print(pool.r.squared(fit))
 ```
 
--   Since multiple imputation creates multiple linear regressions based on multiple imputations, the estimated r-value is 0.7317 with a 95% confidence interval between 0.6664 and 0.7861.
+-   Since multiple imputation creates multiple linear regressions based on multiple imputations, the estimated r-value is 0.7317 with a 95% confidence interval between 0.6664 and 0.7861. [@mice]
 
 # Conclusion
 
